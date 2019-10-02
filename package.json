@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/core": "^0.3.2",
+    "@emotion/core": "^10.0.17",
+    "@emotion/styled": "^10.0.17",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.9",
     "@types/react": "16.9.4",
     "@types/react-dom": "16.9.1",
+    "emotion-theming": "^10.0.19",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-scripts": "3.1.2",
@@ -14,9 +18,18 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "BROWSER=false start-server-and-test start 3000 cypress",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:unit": "yarn test --watchAll=false",
+    "test:e2e": "BROWSER=false start-server-and-test start 3000 cypress:run",
+    "test:all": "yarn test:unit && yarn test:e2e",
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:run": "cypress run",
+    "lint": "eslint --ext js,ts,tsx src",
+    "typecheck": "tsc --noEmit",
+    "validate": "yarn lint && yarn typecheck && yarn test:all"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +45,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "@testing-library/cypress": "^5.0.1",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.2.0",
+    "@types/testing-library__cypress": "^5.0.0",
+    "@types/testing-library__react": "^9.1.1",
+    "cypress": "^3.4.1",
+    "start-server-and-test": "^1.10.3",
+    "ts-loader": "^6.2.0"
   }
 }
