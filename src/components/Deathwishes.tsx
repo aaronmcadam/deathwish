@@ -1,5 +1,5 @@
 import * as ApolloReactHooks from '@apollo/react-hooks';
-import { Box, Button, Heading, Stack, Text } from '@chakra-ui/core';
+import { Box, Heading, Stack, Text } from '@chakra-ui/core';
 import gql from 'graphql-tag';
 import * as React from 'react';
 import { DeathwishQuery } from '../types';
