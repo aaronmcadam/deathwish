@@ -1,9 +1,15 @@
+import { ApolloProvider } from '@apollo/react-hooks';
+import { ThemeProvider } from '@chakra-ui/core';
 import { render, RenderOptions } from '@testing-library/react';
 import React from 'react';
-import { ThemeProvider } from '@chakra-ui/core';
+import { client } from './client';
 
 const Providers: React.FC = ({ children }) => {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return (
+    <ApolloProvider client={client}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </ApolloProvider>
+  );
 };
 
 function customRender(
@@ -15,6 +21,5 @@ function customRender(
 
 // re-export everything
 export * from '@testing-library/react';
-
 // override render method
 export { customRender as render };
