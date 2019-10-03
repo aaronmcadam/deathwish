@@ -1,10 +1,10 @@
 import { Badge, Box, Button, Heading, Stack, Text } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
 import React from 'react';
+import { Deathwish, DeathwishType } from '../types/graphql';
 import { ReactComponent as Holiday } from './illustrations/holiday.svg';
 import { ReactComponent as Money } from './illustrations/money.svg';
 import { ReactComponent as Video } from './illustrations/video-message.svg';
-import { DeathwishType, Deathwish } from '../types';
 
 export const illustrations: Record<
   DeathwishType,
@@ -34,7 +34,7 @@ const templates: Record<
   }
 };
 
-export const DeathWishCard: React.FC<
+export const DeathwishCard: React.FC<
   StackProps & {
     isPopular?: boolean;
     type: DeathwishType;

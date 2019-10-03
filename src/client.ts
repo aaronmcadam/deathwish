@@ -6,6 +6,10 @@ import { onError } from 'apollo-link-error';
 import gql from 'graphql-tag';
 import uuidv4 from 'uuid/v4';
 
+/**
+ * TODO: Look at imporitng the schema.gql file to avoid duplication.
+ * May not be worth it though
+ */
 const typeDefs = gql`
   enum DeathwishType {
     holiday
@@ -26,8 +30,22 @@ const typeDefs = gql`
     deathwish: Deathwish
   }
 
+  input DeathWishAttributes {
+    type: DeathwishType!
+    title: String!
+    description: String!
+    cost: Int!
+    recipients: String!
+  }
+
   input CreateDeathwishInput {
-    deathwish: Deathwish!
+    deathwish: DeathWishAttributes!
+  }
+
+  type CreateDeathwishPayload {
+    # The deathwish that was created. It is nullable so that if there is
+    # an error then null won’t propagate past the deathwish.
+    deathwish: Deathwish
   }
 
   extend type Mutation {

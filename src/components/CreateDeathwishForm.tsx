@@ -1,4 +1,3 @@
-import * as ApolloReactHooks from '@apollo/react-hooks';
 import {
   Button,
   FormControl,
@@ -12,21 +11,8 @@ import {
   Stack,
   Textarea
 } from '@chakra-ui/core';
-import gql from 'graphql-tag';
 import * as React from 'react';
-import {
-  CreateDeathwishMutation,
-  CreateDeathwishMutationVariables,
-  DeathwishType
-} from '../types';
-
-const CREATE_DEATHWISH = gql`
-  mutation CreateDeathwish($input: CreateDeathwishInput!) {
-    createDeathwish(input: $input) @client {
-      name
-    }
-  }
-`;
+import { DeathwishType, useCreateDeathwishMutation } from '../types/graphql';
 
 export const CreateDeathwishForm: React.FC = () => {
   const [type, setType] = React.useState(DeathwishType.Money);
@@ -34,10 +20,7 @@ export const CreateDeathwishForm: React.FC = () => {
   const [description, setDescription] = React.useState('');
   const [cost, setCost] = React.useState(0);
   const [recipients, setRecipients] = React.useState('');
-  const [createWish] = ApolloReactHooks.useMutation<
-    CreateDeathwishMutation,
-    CreateDeathwishMutationVariables
-  >(CREATE_DEATHWISH, {
+  const [createDeathWish] = useCreateDeathwishMutation({
     variables: {
       input: {
         deathwish: {
@@ -62,7 +45,7 @@ export const CreateDeathwishForm: React.FC = () => {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    await createWish();
+    await createDeathWish();
 
     resetForm();
   }

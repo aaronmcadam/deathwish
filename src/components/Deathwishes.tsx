@@ -1,24 +1,10 @@
-import * as ApolloReactHooks from '@apollo/react-hooks';
 import { Box, Heading, Stack, Text } from '@chakra-ui/core';
-import gql from 'graphql-tag';
 import * as React from 'react';
-import { DeathwishQuery } from '../types';
+import { useDeathwishQuery } from '../types/graphql';
 import { illustrations } from './DeathwishCard';
 
-const DEATHWISH = gql`
-  query Deathwish {
-    deathwish @client {
-      type
-      title
-      description
-      cost
-      recipients
-    }
-  }
-`;
-
 export const CurrentDeathwish: React.FC = () => {
-  const { data } = ApolloReactHooks.useQuery<DeathwishQuery>(DEATHWISH);
+  const { data } = useDeathwishQuery();
 
   if (!data) {
     return null;

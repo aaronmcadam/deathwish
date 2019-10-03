@@ -1,0 +1,40 @@
+enum DeathwishType {
+  holiday
+  money
+  video
+}
+
+type Deathwish {
+  id: ID!
+  type: DeathwishType!
+  title: String!
+  description: String!
+  cost: Int!
+  recipients: String!
+}
+
+type Query {
+  deathwish: Deathwish
+}
+
+input DeathWishAttributes {
+  type: DeathwishType!
+  title: String!
+  description: String!
+  cost: Int!
+  recipients: String!
+}
+
+input CreateDeathwishInput {
+  deathwish: DeathWishAttributes!
+}
+
+type CreateDeathwishPayload {
+  # The deathwish that was created. It is nullable so that if there is
+  # an error then null won’t propagate past the deathwish.
+  deathwish: Deathwish
+}
+
+type Mutation {
+  createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
+}

@@ -1,0 +1,21 @@
+schema: schema.graphql
+documents:
+  - "./src/**/*.{tsx,ts}"
+  # This component is for testing that remote GraphQL queries are working
+  - "!./src/components/Pokemon.tsx"
+
+overwrite: true
+generates:
+  ./src/types/graphql.tsx:
+    plugins:
+      - add: "/* eslint-disable */"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    # The combined options of all provided plug-ins
+    # More information about the options below:
+    # graphql-code-generator.com/docs/plugins/typescript-react-apollo#configuration
+    config:
+      withHOC: false
+      withHooks: true
+      withComponent: false

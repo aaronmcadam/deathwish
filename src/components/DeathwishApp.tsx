@@ -1,8 +1,8 @@
 import { Heading, Stack } from '@chakra-ui/core';
 import React from 'react';
-import { DeathwishType } from '../types';
+import { DeathwishType } from '../types/graphql';
 import { CreateDeathwishForm } from './CreateDeathwishForm';
-import { DeathWishCard as DeathwishCard } from './DeathwishCard';
+import { DeathwishCard } from './DeathwishCard';
 import { CurrentDeathwish } from './Deathwishes';
 
 export const DeathwishApp: React.FC = () => {
