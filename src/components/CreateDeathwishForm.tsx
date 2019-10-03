@@ -2,53 +2,74 @@ import * as ApolloReactHooks from '@apollo/react-hooks';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Heading,
   Input,
-  Stack,
-  NumberInput,
-  FormHelperText,
-  Textarea,
-  RadioGroup,
-  Radio,
   InputGroup,
-  InputLeftAddon
+  InputLeftAddon,
+  NumberInput,
+  Stack,
+  Textarea
 } from '@chakra-ui/core';
 import gql from 'graphql-tag';
 import * as React from 'react';
+import {
+  CreateDeathwishMutation,
+  CreateDeathwishMutationVariables,
+  DeathwishType
+} from '../types';
 
-const CREATE_WISH = gql`
+const CREATE_DEATHWISH = gql`
   mutation CreateDeathwish($input: CreateDeathwishInput!) {
-    createDeathwish(input: $input) @client
+    createDeathwish(input: $input) @client {
+      name
+    }
   }
 `;
 
 export const CreateDeathwishForm: React.FC = () => {
-  const [type, setType] = React.useState('');
-  const [name, setName] = React.useState('');
+  const [type, setType] = React.useState(DeathwishType.Money);
+  const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [cost, setCost] = React.useState(0);
   const [recipients, setRecipients] = React.useState('');
-  const [createWish] = ApolloReactHooks.useMutation(CREATE_WISH, {
+  const [createWish] = ApolloReactHooks.useMutation<
+    CreateDeathwishMutation,
+    CreateDeathwishMutationVariables
+  >(CREATE_DEATHWISH, {
     variables: {
       input: {
-        type,
-        name,
-        description,
-        cost,
-        recipients
+        deathwish: {
+          type,
+          title,
+          description,
+          cost,
+          recipients
+        }
       }
     }
   });
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function resetForm() {
+    setType(DeathwishType.Money);
+    setTitle('');
+    setDescription('');
+    setCost(0);
+    setRecipients('');
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    createWish();
+    await createWish();
+
+    resetForm();
   }
 
   return (
     <Stack
+      data-testid="create-deathwish-form"
       as="form"
       onSubmit={handleSubmit}
       backgroundColor="white"
@@ -57,36 +78,30 @@ export const CreateDeathwishForm: React.FC = () => {
       spacing={4}
     >
       <Heading size="md">Create your deathwish!</Heading>
-      <FormControl as="fieldset">
-        <FormLabel as="legend" htmlFor="type">
-          Type
-        </FormLabel>
-        <RadioGroup
-          value={type}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setType(event.target.value)
-          }
-          id="type"
-        >
-          <Radio value="money">Money</Radio>
-          <Radio value="holiday">Holiday</Radio>
-          <Radio value="video-message">Video Message</Radio>
-        </RadioGroup>
-      </FormControl>
+      <input
+        data-testid="type-input"
+        type="hidden"
+        value={type}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setType(event.target.value as DeathwishType)
+        }
+      />
       <FormControl>
-        <FormLabel htmlFor="email">Name your deathwish</FormLabel>
+        <FormLabel htmlFor="title">Name your deathwish</FormLabel>
         <Input
-          value={name}
+          data-testid="title-input"
+          value={title}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setName(event.target.value)
+            setTitle(event.target.value)
           }
           type="text"
-          id="text"
+          id="name"
         />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="description">Tell us your request</FormLabel>
         <Input
+          data-testid="description-input"
           as={Textarea}
           value={description}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -100,6 +115,7 @@ export const CreateDeathwishForm: React.FC = () => {
         <InputGroup>
           <InputLeftAddon children="£" />
           <NumberInput
+            data-testid="cost-input"
             value={cost}
             onChange={(value: any) => setCost(value)}
             min={0}
@@ -116,6 +132,7 @@ export const CreateDeathwishForm: React.FC = () => {
       <FormControl>
         <FormLabel htmlFor="recipients">Who are the recipients?</FormLabel>
         <Input
+          data-testid="recipients-input"
           value={recipients}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setRecipients(event.target.value)

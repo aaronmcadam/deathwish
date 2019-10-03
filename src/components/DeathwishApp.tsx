@@ -1,8 +1,9 @@
 import { Heading, Stack } from '@chakra-ui/core';
 import React from 'react';
-import { DeathWishCard as DeathwishCard } from './DeathwishCard';
-import { CurrentWish } from './Deathwishes';
+import { DeathwishType } from '../types';
 import { CreateDeathwishForm } from './CreateDeathwishForm';
+import { DeathWishCard as DeathwishCard } from './DeathwishCard';
+import { CurrentDeathwish } from './Deathwishes';
 
 export const DeathwishApp: React.FC = () => {
   return (
@@ -33,11 +34,11 @@ export const DeathwishApp: React.FC = () => {
           justify="center"
           align="center"
         >
-          <DeathwishCard type="holiday" />
-          <DeathwishCard type="money" isPopular={true} />
-          <DeathwishCard type="video-message" />
+          <DeathwishCard type={DeathwishType.Holiday} />
+          <DeathwishCard type={DeathwishType.Money} isPopular={true} />
+          <DeathwishCard type={DeathwishType.Video} />
         </Stack>
-        <CurrentWish />
+        <CurrentDeathwish />
         <CreateDeathwishForm />
       </Stack>
     </Stack>
