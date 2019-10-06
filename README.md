@@ -1,10 +1,10 @@
-# DeathWish
+# Deathwish
 
-This app allows users to create and manage their "DeathWishes".
+This app allows users to create and manage their "Deathwishes".
 
-A "DeathWish" is a request somebody can create that gets carried out after they pass away.
+A "Deathwish" is a request somebody can create that gets carried out after they pass away.
 
-In theory a DeathWish could be anything:
+In theory a Deathwish could be anything:
 
 - A video messages for family members
 - Life insurance
@@ -14,11 +14,19 @@ In theory a DeathWish could be anything:
 
 The app allows the following use cases:
 
-- [ ] A user can view a list of available DeathWishes (minimum of 2 different DeathWishes).
-- [ ] A user can add a DeathWish to their account.
-- [ ] A user can edit the DeathWish.
-- [ ] A user can delete the DeathWish.
-- [ ] A user can create new types of DeathWish
+- [ ] A user can view a list of available Deathwish templates (minimum of 2).
+- [ ] A user can add a Deathwish to their account.
+- [ ] A user can view their Deathwishes.
+- [ ] A user can edit the Deathwish.
+- [ ] A user can delete the Deathwish.
+
+A Deathwish has the following attributes:
+
+- id
+- type
+- title
+- description
+- recipients
 
 ## First Phase
 
@@ -43,7 +51,7 @@ Some concerns to note are:
 
 ### Back end
 
-The back end could be a deployed with as a standard Node.js application.
+The back end could be a deployed with serverless or docker as a standard Node.js application.
 
 Some concerns to note are:
 

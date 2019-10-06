@@ -2,7 +2,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider } from '@chakra-ui/core';
 import { render, RenderOptions } from '@testing-library/react';
 import React from 'react';
-import { client } from './client';
+import { client } from './graphql/client';
 
 const Providers: React.FC = ({ children }) => {
   return (
