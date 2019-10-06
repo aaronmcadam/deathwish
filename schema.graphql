@@ -14,7 +14,8 @@ type Deathwish {
 }
 
 type Query {
-  deathwish: Deathwish
+  deathwishes: [Deathwish!]!
+  deathwish(id: ID!): Deathwish
 }
 
 input DeathWishAttributes {

@@ -3,7 +3,7 @@ import React from 'react';
 import { DeathwishType } from '../types/graphql';
 import { CreateDeathwishForm } from './CreateDeathwishForm';
 import { DeathwishCard } from './DeathwishCard';
-import { CurrentDeathwish } from './Deathwishes';
+import { CurrentDeathwishes } from './CurrentDeathwishes';
 
 export const DeathwishApp: React.FC = () => {
   return (
@@ -38,7 +38,7 @@ export const DeathwishApp: React.FC = () => {
           <DeathwishCard type={DeathwishType.Money} isPopular={true} />
           <DeathwishCard type={DeathwishType.Video} />
         </Stack>
-        <CurrentDeathwish />
+        <CurrentDeathwishes />
         <CreateDeathwishForm />
       </Stack>
     </Stack>

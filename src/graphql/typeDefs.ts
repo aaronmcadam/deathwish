@@ -23,7 +23,8 @@ export const typeDefs = gql`
   }
 
   extend type Query {
-    deathwish: Deathwish
+    deathwishes: [Deathwish!]!
+    deathwish(id: ID!): Deathwish
   }
 
   input DeathWishAttributes {

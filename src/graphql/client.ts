@@ -26,8 +26,15 @@ const link = ApolloLink.from([
   new HttpLink({ uri: 'https://graphql-pokemon.now.sh' })
 ]);
 
+const cache = new InMemoryCache();
+cache.writeData({
+  data: {
+    deathwishes: []
+  }
+});
+
 export const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link,
   typeDefs,
   resolvers

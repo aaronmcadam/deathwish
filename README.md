@@ -26,6 +26,7 @@ A Deathwish has the following attributes:
 - type
 - title
 - description
+- cost
 - recipients
 
 ## First Phase
