@@ -14,9 +14,9 @@ In theory a Deathwish could be anything:
 
 The app allows the following use cases:
 
-- [ ] A user can view a list of available Deathwish templates (minimum of 2).
-- [ ] A user can add a Deathwish to their account.
-- [ ] A user can view their Deathwishes.
+- [x] A user can view a list of available Deathwish templates (minimum of 2).
+- [x] A user can add a Deathwish to their account.
+- [x] A user can view their Deathwishes.
 - [ ] A user can edit the Deathwish.
 - [ ] A user can delete the Deathwish.
 
@@ -28,6 +28,7 @@ A Deathwish has the following attributes:
 - description
 - cost
 - recipients
+- createdAt (? do we need this? Sorting/filtering?)
 
 ## First Phase
 

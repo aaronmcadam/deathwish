@@ -5,6 +5,25 @@ import { onError } from 'apollo-link-error';
 import { HttpLink } from 'apollo-link-http';
 import { resolvers } from './resolvers';
 import { typeDefs } from './typeDefs';
+import { Deathwish } from '../types/graphql';
+
+export function persistDeathwishes(deathwishes: Deathwish[]): void {
+  const serialized = JSON.stringify(deathwishes);
+
+  window.localStorage.setItem('__deathwishes__', serialized);
+}
+
+function persistedDeathwishes(): Deathwish[] {
+  const serialized = window.localStorage.getItem('__deathwishes__');
+
+  if (!serialized) {
+    return [];
+  }
+
+  const deathwishes: Deathwish[] = JSON.parse(serialized);
+
+  return deathwishes;
+}
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -29,7 +48,7 @@ const link = ApolloLink.from([
 const cache = new InMemoryCache();
 cache.writeData({
   data: {
-    deathwishes: []
+    deathwishes: persistedDeathwishes()
   }
 });
 
