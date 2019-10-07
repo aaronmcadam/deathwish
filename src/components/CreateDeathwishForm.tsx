@@ -10,7 +10,8 @@ import {
   InputLeftAddon,
   NumberInput,
   Stack,
-  Textarea
+  Textarea,
+  FormErrorMessage
 } from '@chakra-ui/core';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
@@ -18,9 +19,35 @@ import { useCreateDeathwishMutation } from '../types/graphql';
 import { DeathwishTemplate } from './DeathwishApp';
 import { illustrations, templates } from './DeathwishCard';
 
-/**
- * TODO: Add validation to the form
- */
+function validate(fields: {
+  title: string;
+  description: string;
+  recipients: string;
+}): {
+  title?: string;
+  description?: string;
+  recipients?: string;
+} {
+  let errors: {
+    title?: string;
+    description?: string;
+    recipients?: string;
+  } = {};
+  if (!fields.title) {
+    errors.title = "Don't forget to tell us the name of the deathwish";
+  }
+
+  if (!fields.description) {
+    errors.description = "We need you to describe what you'd like to happen";
+  }
+
+  if (!fields.recipients) {
+    errors.recipients = 'We need to know who benefits from your deathwish';
+  }
+
+  return errors;
+}
+
 export const CreateDeathwishForm: React.FC = () => {
   const history = ReactRouter.useHistory();
   const {
@@ -44,9 +71,24 @@ export const CreateDeathwishForm: React.FC = () => {
       }
     }
   });
+  const [formErrors, setFormErrors] = React.useState<{
+    title?: string;
+    description?: string;
+    recipients?: string;
+  }>({});
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const formErrors = validate({
+      title,
+      description,
+      recipients
+    });
+
+    if (Object.keys(formErrors).length) {
+      return setFormErrors(formErrors);
+    }
 
     await createDeathWish();
 
@@ -78,7 +120,7 @@ export const CreateDeathwishForm: React.FC = () => {
         <Stack isInline={true} justify="center" align="center">
           <Box as={illustrations[template.type]} size={300} padding={4} />
         </Stack>
-        <FormControl>
+        <FormControl isInvalid={!!formErrors.title}>
           <FormLabel htmlFor="title">Name your deathwish</FormLabel>
           <Input
             data-testid="title-input"
@@ -89,8 +131,9 @@ export const CreateDeathwishForm: React.FC = () => {
             type="text"
             id="name"
           />
+          <FormErrorMessage>{formErrors.title}</FormErrorMessage>
         </FormControl>
-        <FormControl>
+        <FormControl isInvalid={!!formErrors.description}>
           <FormLabel htmlFor="description">Tell us your request</FormLabel>
           <Input
             data-testid="description-input"
@@ -101,6 +144,7 @@ export const CreateDeathwishForm: React.FC = () => {
             }
             id="description"
           />
+          <FormErrorMessage>{formErrors.description}</FormErrorMessage>
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="cost">How much will it cost?</FormLabel>
@@ -121,7 +165,7 @@ export const CreateDeathwishForm: React.FC = () => {
             This is only a rough estimate
           </FormHelperText>
         </FormControl>
-        <FormControl>
+        <FormControl isInvalid={!!formErrors.recipients}>
           <FormLabel htmlFor="recipients">Who are the recipients?</FormLabel>
           <Input
             data-testid="recipients-input"
@@ -133,6 +177,7 @@ export const CreateDeathwishForm: React.FC = () => {
             id="recipients"
             aria-describedby="recipients-helper-text"
           />
+          <FormErrorMessage>{formErrors.recipients}</FormErrorMessage>
           <FormHelperText id="recipients-helper-text">
             This can be a comma separated list of email addresses
           </FormHelperText>
