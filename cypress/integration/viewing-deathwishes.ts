@@ -1,5 +1,5 @@
 describe('viewing deathwishes', () => {
-  it('persists deathwishes', () => {
+  it('deathwishes are persisted', () => {
     // 1. User creates a deathwish
     cy.visit('/');
     cy.findByTestId('choose-deathwish-holiday').click();
