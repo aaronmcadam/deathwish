@@ -80,32 +80,7 @@ In the project directory, you can run:
 | `start`       | Starts the app in development mode                                                                        |
 | `test:e2e`    | Runs the End to End tests headlessly. It starts the app first.                                            |
 
-### Learn More
+### A note on patch-package
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+I've had to patch some of the type definitions for Chakra UI. The types should be patched
+automatically by installing the dependencies. I've created an issue and a fix should be available soon: https://github.com/chakra-ui/chakra-ui/issues/148.
