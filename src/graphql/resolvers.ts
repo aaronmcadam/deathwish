@@ -61,6 +61,24 @@ export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
   return deathwishes.find(dw => dw.id === id);
 }
 
+function existingDeathwishes(cache: any): Deathwish[] {
+  const { deathwishes }: { deathwishes: Deathwish[] } = cache.readQuery({
+    query: DEATHWISHES
+  });
+
+  return deathwishes;
+}
+
+function save(
+  cache: any,
+  data: {
+    deathwishes: Deathwish[];
+  }
+): void {
+  cache.writeData({ data });
+  persistDeathwishes(data.deathwishes);
+}
+
 /** TODO: For quicker lookups, we could use an object keyed by the deathwish ID.
  * I've tried to implement that but came across some issues resolving the data.
  * I can try again later.
@@ -69,29 +87,25 @@ export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
 export const resolvers: Resolvers = {
   Query: {
     deathwish: (_parent, args, { cache }) => {
-      const { deathwishes }: { deathwishes: Deathwish[] } = cache.readQuery({
-        query: DEATHWISHES
-      });
+      const deathwishes = existingDeathwishes(cache);
 
-      return deathwishes.find(dw => dw.id === args.id);
+      return findDeathwish(deathwishes, args.id);
     }
   },
   Mutation: {
-    createDeathwish: (_root, variables, { cache }) => {
-      const { deathwishes } = cache.readQuery({ query: DEATHWISHES });
-      const data = addNewDeathwish(variables, deathwishes);
+    createDeathwish: (_parent, args, { cache }) => {
+      const deathwishes = existingDeathwishes(cache);
 
-      cache.writeData({ data });
-      persistDeathwishes(data.deathwishes);
+      const data = addNewDeathwish(args, deathwishes);
+      save(cache, data);
 
       return null;
     },
-    updateDeathwish: (_root, variables, { cache }) => {
-      const { deathwishes } = cache.readQuery({ query: DEATHWISHES });
-      const data = updateDeathwish(variables, deathwishes);
+    updateDeathwish: (_parent, args, { cache }) => {
+      const deathwishes = existingDeathwishes(cache);
 
-      cache.writeData({ data });
-      persistDeathwishes(data.deathwishes);
+      const data = updateDeathwish(args, deathwishes);
+      save(cache, data);
 
       return null;
     }
