@@ -1,23 +1,23 @@
 import {
-  Box,
-  Heading,
-  Stack,
-  Text,
   Alert,
+  AlertDescription,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
+  Box,
   Button,
+  Heading,
+  Stack,
   Tag,
   TagIcon,
-  TagLabel
+  TagLabel,
+  Text
 } from '@chakra-ui/core';
-import * as React from 'react';
-import { useDeathwishesQuery, Deathwish } from '../types/graphql';
-import { illustrations } from './DeathwishCard';
-import { Link as ReactRouterLink } from 'react-router-dom';
-import * as ReactRouter from 'react-router-dom';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
+import * as React from 'react';
+import * as ReactRouter from 'react-router-dom';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import { Deathwish, useDeathwishesQuery } from '../types/graphql';
+import { illustrations } from './DeathwishCard';
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -59,11 +59,20 @@ const BlankSlate: React.FC = () => {
   );
 };
 
-const SuccessMessage: React.FC = () => {
+const CreateSuccessMessage: React.FC = () => {
   return (
     <Alert status="success" variant="subtle" marginTop={4}>
       <AlertIcon />
       You successfully created a new deathwish!
+    </Alert>
+  );
+};
+
+const UpdateSuccessMessage: React.FC = () => {
+  return (
+    <Alert status="success" variant="subtle" marginTop={4}>
+      <AlertIcon />
+      You successfully updated your deathwish!
     </Alert>
   );
 };
@@ -85,7 +94,7 @@ const Recipients: React.FC<{ recipients: Deathwish['recipients'] }> = ({
   );
 };
 
-function successStatus(state?: { newDeathwishWasAdded: boolean }) {
+function createStatus(state?: { newDeathwishWasAdded?: boolean }) {
   if (!state) {
     return false;
   }
@@ -93,9 +102,23 @@ function successStatus(state?: { newDeathwishWasAdded: boolean }) {
   return state.newDeathwishWasAdded;
 }
 
+function editStatus(state?: { deathwishWasUpdated?: boolean }) {
+  if (!state) {
+    return false;
+  }
+
+  return state.deathwishWasUpdated;
+}
+
 const DetailedDeathwishCard: React.FC<
   { deathwish: Deathwish } & StackProps
 > = ({ deathwish, ...styleProps }) => {
+  const history = ReactRouter.useHistory();
+
+  function showEditForm() {
+    history.push(`/edit/${deathwish.id}`);
+  }
+
   return (
     <Stack
       key={deathwish.id}
@@ -127,7 +150,13 @@ const DetailedDeathwishCard: React.FC<
         <Button variant="link" variantColor="black" size="sm">
           Delete
         </Button>
-        <Button variant="outline" variantColor="blue" size="sm">
+        <Button
+          data-testid="edit-deathwish-button"
+          onClick={showEditForm}
+          variant="outline"
+          variantColor="blue"
+          size="sm"
+        >
           Edit
         </Button>
       </Stack>
@@ -137,9 +166,11 @@ const DetailedDeathwishCard: React.FC<
 
 export const Deathwishes: React.FC = () => {
   const location = ReactRouter.useLocation<{
-    newDeathwishWasAdded: boolean;
+    newDeathwishWasAdded?: boolean;
+    deathwishWasUpdated?: boolean;
   }>();
-  const newDeathwishWasAdded = successStatus(location.state);
+  const newDeathwishWasAdded = createStatus(location.state);
+  const deathwishWasUpdated = editStatus(location.state);
   const { data } = useDeathwishesQuery();
 
   if (!data) {
@@ -162,7 +193,8 @@ export const Deathwishes: React.FC = () => {
 
   return (
     <Layout>
-      {newDeathwishWasAdded && <SuccessMessage />}
+      {newDeathwishWasAdded && <CreateSuccessMessage />}
+      {deathwishWasUpdated && <UpdateSuccessMessage />}
       <Heading
         as="h3"
         size="lg"

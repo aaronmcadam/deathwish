@@ -9,3 +9,13 @@ export const CREATE_DEATHWISH = gql`
     }
   }
 `;
+
+export const UPDATE_DEATHWISH = gql`
+  mutation UpdateDeathwish($input: UpdateDeathwishInput!) {
+    updateDeathwish(input: $input) @client {
+      deathwish {
+        id
+      }
+    }
+  }
+`;

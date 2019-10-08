@@ -18,7 +18,7 @@ type Query {
   deathwish(id: ID!): Deathwish
 }
 
-input DeathWishAttributes {
+input DeathwishAttributes {
   type: DeathwishType!
   title: String!
   description: String!
@@ -27,7 +27,7 @@ input DeathWishAttributes {
 }
 
 input CreateDeathwishInput {
-  deathwish: DeathWishAttributes!
+  deathwish: DeathwishAttributes!
 }
 
 type CreateDeathwishPayload {
@@ -36,6 +36,23 @@ type CreateDeathwishPayload {
   deathwish: Deathwish
 }
 
+input UpdateDeathwishAttributes {
+  id: ID!
+  title: String
+  description: String
+  cost: Int
+  recipients: String
+}
+
+input UpdateDeathwishInput {
+  deathwish: UpdateDeathwishAttributes!
+}
+
+type UpdateDeathwishPayload {
+  deathwish: Deathwish
+}
+
 type Mutation {
   createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
+  updateDeathwish(input: UpdateDeathwishInput!): UpdateDeathwishPayload
 }

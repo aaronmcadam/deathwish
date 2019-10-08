@@ -29,6 +29,7 @@ A Deathwish has the following attributes:
 - cost
 - recipients
 - createdAt (? do we need this? Sorting/filtering?)
+- updatedAt (? do we need this? Sorting/filtering?)
 
 ## First Phase
 

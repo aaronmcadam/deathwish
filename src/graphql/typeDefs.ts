@@ -27,7 +27,7 @@ export const typeDefs = gql`
     deathwish(id: ID!): Deathwish
   }
 
-  input DeathWishAttributes {
+  input DeathwishAttributes {
     type: DeathwishType!
     title: String!
     description: String!
@@ -36,7 +36,7 @@ export const typeDefs = gql`
   }
 
   input CreateDeathwishInput {
-    deathwish: DeathWishAttributes!
+    deathwish: DeathwishAttributes!
   }
 
   type CreateDeathwishPayload {
@@ -45,7 +45,24 @@ export const typeDefs = gql`
     deathwish: Deathwish
   }
 
+  input UpdateDeathwishAttributes {
+    id: ID!
+    title: String
+    description: String
+    cost: Int
+    recipients: String
+  }
+
+  input UpdateDeathwishInput {
+    deathwish: UpdateDeathwishAttributes!
+  }
+
+  type UpdateDeathwishPayload {
+    deathwish: Deathwish
+  }
+
   extend type Mutation {
     createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
+    updateDeathwish(input: UpdateDeathwishInput!): UpdateDeathwishPayload
   }
 `;

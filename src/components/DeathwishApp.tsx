@@ -8,6 +8,7 @@ import {
 import { Deathwish, DeathwishType } from '../types/graphql';
 import { ChooseTemplate } from './ChooseTemplate';
 import { CreateDeathwishForm } from './CreateDeathwishForm';
+import { EditDeathwishPane } from './EditDeathwishPane';
 import { Deathwishes } from './Deathwishes';
 
 export interface DeathwishTemplate {
@@ -63,6 +64,7 @@ export const DeathwishApp: React.FC = () => {
           </Stack>
           <Route path="/" exact component={HomePage} />
           <Route path="/create" component={CreateDeathwishForm} />
+          <Route path="/edit/:id" component={EditDeathwishPane} />
           <Route path="/deathwishes" component={Deathwishes} />
         </BrowserRouter>
       </Stack>
