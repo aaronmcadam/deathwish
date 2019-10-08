@@ -17,7 +17,7 @@ The app allows the following use cases:
 - [x] A user can view a list of available Deathwish templates (minimum of 2).
 - [x] A user can add a Deathwish to their account.
 - [x] A user can view their Deathwishes.
-- [ ] A user can edit the Deathwish.
+- [x] A user can edit the Deathwish.
 - [ ] A user can delete the Deathwish.
 
 A Deathwish has the following attributes:
