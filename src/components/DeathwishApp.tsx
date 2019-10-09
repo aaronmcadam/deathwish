@@ -49,7 +49,7 @@ export const DeathwishApp: React.FC = () => {
           <Stack isInline={true} justify="space-between" align="center">
             <ReactRouterLink to="/">
               <Heading as="h1" fontWeight="semibold">
-                DeathWishes
+                DeathWish
               </Heading>
             </ReactRouterLink>
             <Button
