@@ -18,7 +18,7 @@ The app allows the following use cases:
 - [x] A user can add a Deathwish to their account.
 - [x] A user can view their Deathwishes.
 - [x] A user can edit the Deathwish.
-- [ ] A user can delete the Deathwish.
+- [x] A user can delete the Deathwish.
 
 A Deathwish has the following attributes:
 
