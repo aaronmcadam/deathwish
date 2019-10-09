@@ -1,0 +1,12 @@
+overwrite: true
+schema: "http://localhost:3000/graphql"
+documents: null
+generates:
+  ./src/types/__generated__/graphql-types.ts:
+    plugins:
+      - add: "/* eslint-disable */"
+      - "typescript"
+      - "typescript-resolvers"
+config:
+  declarationKind: "interface"
+  useIndexSignature: true

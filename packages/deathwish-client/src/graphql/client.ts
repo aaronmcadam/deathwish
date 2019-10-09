@@ -39,10 +39,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = ApolloLink.from([
   errorLink,
-  // ApolloClient needs a link to a GraphQL endpoint
-  // We're using Pokemon for now. Pika Pika!
-  // This also helps us verify that Apollo is configured for remote queries
-  new HttpLink({ uri: 'https://graphql-pokemon.now.sh' })
+  // TODO: change this to the docker network name when we set up docker
+  new HttpLink({ uri: 'http://localhost:4000' })
 ]);
 
 const cache = new InMemoryCache();

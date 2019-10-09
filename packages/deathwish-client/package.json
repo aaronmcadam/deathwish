@@ -1,7 +1,24 @@
 {
-  "name": "deathwish-frontend",
+  "name": "deathwish-client",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "dev": "BROWSER=false start-server-and-test start 3000 cypress",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:unit": "yarn test --watchAll=false",
+    "test:e2e": "BROWSER=false start-server-and-test start 3000 cypress:run",
+    "test:all": "yarn test:unit && yarn test:e2e",
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:run": "cypress run",
+    "lint": "eslint --ext js,ts,tsx src",
+    "typecheck": "tsc --noEmit",
+    "validate": "yarn lint && yarn typecheck && yarn test:all",
+    "generate": "graphql-codegen --config codegen.yml",
+    "postinstall": "patch-package"
+  },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.2",
     "@chakra-ui/core": "^0.3.2",
@@ -34,22 +51,6 @@
     "typescript": "3.6.3",
     "uuid": "^3.3.3"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "dev": "BROWSER=false start-server-and-test start 3000 cypress",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:unit": "yarn test --watchAll=false",
-    "test:e2e": "BROWSER=false start-server-and-test start 3000 cypress:run",
-    "test:all": "yarn test:unit && yarn test:e2e",
-    "eject": "react-scripts eject",
-    "cypress": "cypress open",
-    "cypress:run": "cypress run",
-    "lint": "eslint --ext js,ts,tsx src",
-    "typecheck": "tsc --noEmit",
-    "validate": "yarn lint && yarn typecheck && yarn test:all",
-    "generate": "graphql-codegen --config codegen.yml"
-   },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -75,6 +76,7 @@
     "cooky-cutter": "^1.4.0",
     "cypress": "^3.4.1",
     "start-server-and-test": "^1.10.3",
-    "ts-loader": "^6.2.0"
+    "ts-loader": "^6.2.0",
+    "patch-package": "^6.2.0"
   }
 }
