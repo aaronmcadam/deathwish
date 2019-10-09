@@ -16,7 +16,7 @@ export const typeDefs = gql`
     recipients: String!
   }
 
-  extend type Query {
+  type Query {
     deathwishes: [Deathwish!]!
     deathwish(id: ID!): Deathwish
   }
@@ -67,7 +67,7 @@ export const typeDefs = gql`
     deathwish: Deathwish
   }
 
-  extend type Mutation {
+  type Mutation {
     createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
     updateDeathwish(input: UpdateDeathwishInput!): UpdateDeathwishPayload
     deleteDeathwish(input: DeleteDeathwishInput!): DeleteDeathwishPayload

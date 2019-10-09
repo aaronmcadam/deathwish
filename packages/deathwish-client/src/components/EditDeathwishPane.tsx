@@ -17,6 +17,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import {
   Deathwish,
+  DeathwishesDocument,
   useDeathwishQuery,
   useUpdateDeathwishMutation
 } from '../types/graphql';
@@ -74,7 +75,8 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
           recipients
         }
       }
-    }
+    },
+    refetchQueries: [{ query: DeathwishesDocument }]
   });
   const [formErrors, setFormErrors] = React.useState<{
     title?: string;

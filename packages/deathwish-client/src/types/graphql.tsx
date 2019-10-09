@@ -11,7 +11,15 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any,
 };
+
+
+export enum CacheControlScope {
+  Public = 'PUBLIC',
+  Private = 'PRIVATE'
+}
 
 export type CreateDeathwishInput = {
   deathwish: DeathwishAttributes,
@@ -109,6 +117,7 @@ export type UpdateDeathwishPayload = {
   deathwish?: Maybe<Deathwish>,
 };
 
+
 export type CreateDeathwishMutationVariables = {
   input: CreateDeathwishInput
 };
@@ -184,7 +193,7 @@ export type DeathwishQuery = (
 
 export const CreateDeathwishDocument = gql`
     mutation CreateDeathwish($input: CreateDeathwishInput!) {
-  createDeathwish(input: $input) @client {
+  createDeathwish(input: $input) {
     deathwish {
       id
     }
@@ -218,7 +227,7 @@ export type CreateDeathwishMutationResult = ApolloReactCommon.MutationResult<Cre
 export type CreateDeathwishMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateDeathwishMutation, CreateDeathwishMutationVariables>;
 export const UpdateDeathwishDocument = gql`
     mutation UpdateDeathwish($input: UpdateDeathwishInput!) {
-  updateDeathwish(input: $input) @client {
+  updateDeathwish(input: $input) {
     deathwish {
       id
     }
@@ -252,7 +261,7 @@ export type UpdateDeathwishMutationResult = ApolloReactCommon.MutationResult<Upd
 export type UpdateDeathwishMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateDeathwishMutation, UpdateDeathwishMutationVariables>;
 export const DeleteDeathwishDocument = gql`
     mutation DeleteDeathwish($input: DeleteDeathwishInput!) {
-  deleteDeathwish(input: $input) @client {
+  deleteDeathwish(input: $input) {
     deathwish {
       id
     }
@@ -286,7 +295,7 @@ export type DeleteDeathwishMutationResult = ApolloReactCommon.MutationResult<Del
 export type DeleteDeathwishMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDeathwishMutation, DeleteDeathwishMutationVariables>;
 export const DeathwishesDocument = gql`
     query Deathwishes {
-  deathwishes @client {
+  deathwishes {
     id
     type
     title
@@ -323,7 +332,7 @@ export type DeathwishesLazyQueryHookResult = ReturnType<typeof useDeathwishesLaz
 export type DeathwishesQueryResult = ApolloReactCommon.QueryResult<DeathwishesQuery, DeathwishesQueryVariables>;
 export const DeathwishDocument = gql`
     query Deathwish($id: ID!) {
-  deathwish(id: $id) @client {
+  deathwish(id: $id) {
     id
     type
     title

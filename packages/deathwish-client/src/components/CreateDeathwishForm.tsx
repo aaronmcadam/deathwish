@@ -15,7 +15,10 @@ import {
 } from '@chakra-ui/core';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { useCreateDeathwishMutation } from '../types/graphql';
+import {
+  useCreateDeathwishMutation,
+  DeathwishesDocument
+} from '../types/graphql';
 import { DeathwishTemplate } from './DeathwishApp';
 import { illustrations, templates } from './DeathwishCard';
 
@@ -69,7 +72,8 @@ export const CreateDeathwishForm: React.FC = () => {
           recipients
         }
       }
-    }
+    },
+    refetchQueries: [{ query: DeathwishesDocument }]
   });
   const [formErrors, setFormErrors] = React.useState<{
     title?: string;

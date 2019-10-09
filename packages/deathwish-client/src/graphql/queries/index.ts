@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const DEATHWISHES = gql`
   query Deathwishes {
-    deathwishes @client {
+    deathwishes {
       id
       type
       title
@@ -15,7 +15,7 @@ export const DEATHWISHES = gql`
 
 export const DEATHWISH = gql`
   query Deathwish($id: ID!) {
-    deathwish(id: $id) @client {
+    deathwish(id: $id) {
       id
       type
       title

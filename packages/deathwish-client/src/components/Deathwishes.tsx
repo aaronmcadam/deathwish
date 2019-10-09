@@ -27,7 +27,8 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 import {
   Deathwish,
   useDeathwishesQuery,
-  useDeleteDeathwishMutation
+  useDeleteDeathwishMutation,
+  DeathwishesDocument
 } from '../types/graphql';
 import { illustrations } from './DeathwishCard';
 
@@ -132,7 +133,8 @@ const DetailedDeathwishCard: React.FC<
           id: deathwish.id
         }
       }
-    }
+    },
+    refetchQueries: [{ query: DeathwishesDocument }]
   });
   const history = ReactRouter.useHistory();
   const { isOpen, onOpen, onClose } = Chakra.useDisclosure();

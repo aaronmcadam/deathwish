@@ -76,7 +76,6 @@
     "cooky-cutter": "^1.4.0",
     "cypress": "^3.4.1",
     "start-server-and-test": "^1.10.3",
-    "ts-loader": "^6.2.0",
-    "patch-package": "^6.2.0"
+    "ts-loader": "^6.2.0"
   }
 }

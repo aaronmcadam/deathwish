@@ -1,9 +1,6 @@
-schema: schema.graphql
+schema: "http://localhost:4000/graphql"
 documents:
   - "./src/**/*.{tsx,ts}"
-  # This component is for testing that remote GraphQL queries are working
-  - "!./src/components/Pokemon.tsx"
-
 overwrite: true
 generates:
   ./src/types/graphql.tsx:

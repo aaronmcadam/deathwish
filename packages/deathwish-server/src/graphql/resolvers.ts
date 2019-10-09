@@ -1,11 +1,10 @@
-import { Resolvers } from 'apollo-client';
 import uuidv4 from 'uuid/v4';
 import {
   Deathwish,
-  UpdateDeathwishMutationVariables,
-  DeleteDeathwishMutationVariables
+  MutationUpdateDeathwishArgs,
+  MutationDeleteDeathwishArgs,
+  Resolvers
 } from '../types/graphql';
-import { DEATHWISHES } from './queries';
 import produce from 'immer';
 
 export function addNewDeathwish(
@@ -27,7 +26,7 @@ export function addNewDeathwish(
 }
 
 export function updateDeathwish(
-  mutationVariables: UpdateDeathwishMutationVariables,
+  mutationVariables: MutationUpdateDeathwishArgs,
   existingDeathwishes: Deathwish[]
 ) {
   const {
@@ -61,7 +60,7 @@ export function updateDeathwish(
 }
 
 export function deleteDeathwish(
-  mutationVariables: DeleteDeathwishMutationVariables,
+  mutationVariables: MutationDeleteDeathwishArgs,
   existingDeathwishes: Deathwish[]
 ) {
   const { id } = mutationVariables.input.deathwish;
@@ -76,58 +75,61 @@ export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
   return deathwishes.find(dw => dw.id === id);
 }
 
-function existingDeathwishes(cache: any): Deathwish[] {
-  const { deathwishes }: { deathwishes: Deathwish[] } = cache.readQuery({
-    query: DEATHWISHES
-  });
-
-  return deathwishes;
+function existingDeathwishes(): Deathwish[] {
+  return inMemoryDeathwishes;
 }
 
-function save(
-  cache: any,
-  data: {
-    deathwishes: Deathwish[];
-  }
-): void {
-  cache.writeData({ data });
-}
-
-/** TODO: For quicker lookups, we could use an object keyed by the deathwish ID.
- * I've tried to implement that but came across some issues resolving the data.
- * I can try again later.
+/**
+ * This is causing shared state and breaking the E2E tests, which expect a
+ * blank slate before they create their own data.
+ *
+ * In theory, this problem would still occur when we move to a database
+ * implementation.
+ *
+ * Options:
+ * 1. Add a mutation to clear the deathwishes. We would have to trigger
+ * that from the E2E tests.
+ * 2. Pass along some identifier in the mutations to namespace the data.
+ * Could we generate this identifier on app start and save to local storage?
+ * Do the E2E tests start brand new browser sessions? If they don't, the tests
+ * may still end up with existing data.
+ * We discussed asking for the user's name before, maybe that will work.
+ * We would need to force the user to fill out their name though before seeing
+ * anything, effectively acting like a sign in process.
  */
+let inMemoryDeathwishes: Deathwish[] = [];
 
 export const resolvers: Resolvers = {
   Query: {
-    deathwish: (_parent, args, { cache }) => {
-      const deathwishes = existingDeathwishes(cache);
+    deathwish: (_parent, args, _context) => {
+      const deathwish = findDeathwish(inMemoryDeathwishes, args.id);
 
-      return findDeathwish(deathwishes, args.id);
+      if (!deathwish) {
+        return null;
+      }
+
+      return deathwish;
+    },
+    deathwishes: (_parent, _args, _context) => {
+      return inMemoryDeathwishes;
     }
   },
   Mutation: {
-    createDeathwish: (_parent, args, { cache }) => {
-      const deathwishes = existingDeathwishes(cache);
-
-      const data = addNewDeathwish(args, deathwishes);
-      save(cache, data);
+    createDeathwish: (_parent, args, _context) => {
+      const data = addNewDeathwish(args, inMemoryDeathwishes);
+      inMemoryDeathwishes = data.deathwishes;
 
       return null;
     },
-    updateDeathwish: (_parent, args, { cache }) => {
-      const deathwishes = existingDeathwishes(cache);
-
-      const data = updateDeathwish(args, deathwishes);
-      save(cache, data);
+    updateDeathwish: (_parent, args, _context) => {
+      const data = updateDeathwish(args, inMemoryDeathwishes);
+      inMemoryDeathwishes = data.deathwishes;
 
       return null;
     },
-    deleteDeathwish: (_parent, args, { cache }) => {
-      const deathwishes = existingDeathwishes(cache);
-
-      const data = deleteDeathwish(args, deathwishes);
-      save(cache, data);
+    deleteDeathwish: (_parent, args, _context) => {
+      const data = deleteDeathwish(args, inMemoryDeathwishes);
+      inMemoryDeathwishes = data.deathwishes;
 
       return null;
     }
