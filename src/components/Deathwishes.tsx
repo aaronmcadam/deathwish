@@ -1,3 +1,4 @@
+import * as Chakra from '@chakra-ui/core';
 import {
   Alert,
   AlertDescription,
@@ -10,13 +11,24 @@ import {
   Tag,
   TagIcon,
   TagLabel,
-  Text
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton
 } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Deathwish, useDeathwishesQuery } from '../types/graphql';
+import {
+  Deathwish,
+  useDeathwishesQuery,
+  useDeleteDeathwishMutation
+} from '../types/graphql';
 import { illustrations } from './DeathwishCard';
 
 const Layout: React.FC = ({ children }) => {
@@ -113,54 +125,108 @@ function editStatus(state?: { deathwishWasUpdated?: boolean }) {
 const DetailedDeathwishCard: React.FC<
   { deathwish: Deathwish } & StackProps
 > = ({ deathwish, ...styleProps }) => {
+  const [deleteDeathwish] = useDeleteDeathwishMutation({
+    variables: {
+      input: {
+        deathwish: {
+          id: deathwish.id
+        }
+      }
+    }
+  });
   const history = ReactRouter.useHistory();
+  const { isOpen, onOpen, onClose } = Chakra.useDisclosure();
 
   function showEditForm() {
     history.push(`/edit/${deathwish.id}`);
   }
 
+  async function handleDeleteClick() {
+    await deleteDeathwish();
+
+    if (onClose) {
+      onClose();
+    }
+  }
+
   return (
-    <Stack
-      key={deathwish.id}
-      data-testid="current-deathwish"
-      boxShadow="md"
-      backgroundColor="white"
-      width={300}
-      spacing={0}
-      marginTop={8}
-      {...styleProps}
-    >
-      <Stack isInline={true} justify="center" align="center" height={300}>
-        <Box as={illustrations[deathwish.type]} size={300} padding={4} />
-      </Stack>
-      <Stack spacing={2} borderTop="1px" borderColor="gray.200" px={4} py={4}>
-        <Heading size="md">{deathwish.title}</Heading>
-        <Text color="gray.600">{deathwish.description}</Text>
-        <Text fontWeight="bold">£{deathwish.cost}</Text>
-        <Recipients recipients={deathwish.recipients} />
-      </Stack>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Are you sure?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>This action can't be undone!</Text>
+          </ModalBody>
+          <ModalFooter backgroundColor="gray.200">
+            <Button
+              data-testid="cancel-delete-button"
+              variant="outline"
+              variantColor="blue"
+              mr={2}
+              onClick={onClose}
+            >
+              Don't delete
+            </Button>
+            <Button
+              data-testid="confirm-delete-button"
+              onClick={handleDeleteClick}
+              variantColor="red"
+            >
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Stack
-        isInline={true}
-        backgroundColor="gray.200"
-        justify="flex-end"
-        align="center"
-        padding={2}
-        marginTop="auto"
+        key={deathwish.id}
+        data-testid="current-deathwish"
+        boxShadow="md"
+        backgroundColor="white"
+        width={300}
+        spacing={0}
+        marginTop={8}
+        {...styleProps}
       >
-        <Button variant="link" variantColor="black" size="sm">
-          Delete
-        </Button>
-        <Button
-          data-testid="edit-deathwish-button"
-          onClick={showEditForm}
-          variant="outline"
-          variantColor="blue"
-          size="sm"
+        <Stack isInline={true} justify="center" align="center" height={300}>
+          <Box as={illustrations[deathwish.type]} size={300} padding={4} />
+        </Stack>
+        <Stack spacing={2} borderTop="1px" borderColor="gray.200" px={4} py={4}>
+          <Heading size="md">{deathwish.title}</Heading>
+          <Text color="gray.600">{deathwish.description}</Text>
+          <Text fontWeight="bold">£{deathwish.cost}</Text>
+          <Recipients recipients={deathwish.recipients} />
+        </Stack>
+        <Stack
+          isInline={true}
+          backgroundColor="gray.200"
+          justify="flex-end"
+          align="center"
+          padding={2}
+          marginTop="auto"
         >
-          Edit
-        </Button>
+          <Button
+            data-testid="delete-deathwish-button"
+            onClick={onOpen}
+            variant="link"
+            variantColor="black"
+            size="sm"
+          >
+            Delete
+          </Button>
+          <Button
+            data-testid="edit-deathwish-button"
+            onClick={showEditForm}
+            variant="outline"
+            variantColor="blue"
+            size="sm"
+          >
+            Edit
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };
 

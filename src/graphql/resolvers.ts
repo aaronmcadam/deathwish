@@ -1,6 +1,10 @@
 import { Resolvers } from 'apollo-client';
 import uuidv4 from 'uuid/v4';
-import { Deathwish, UpdateDeathwishMutationVariables } from '../types/graphql';
+import {
+  Deathwish,
+  UpdateDeathwishMutationVariables,
+  DeleteDeathwishMutationVariables
+} from '../types/graphql';
 import { DEATHWISHES } from './queries';
 import { persistDeathwishes } from './client';
 import produce from 'immer';
@@ -57,6 +61,18 @@ export function updateDeathwish(
   return cacheUpdate;
 }
 
+export function deleteDeathwish(
+  mutationVariables: DeleteDeathwishMutationVariables,
+  existingDeathwishes: Deathwish[]
+) {
+  const { id } = mutationVariables.input.deathwish;
+  const nextState = existingDeathwishes.filter(dw => dw.id !== id);
+
+  const cacheUpdate = { deathwishes: nextState };
+
+  return cacheUpdate;
+}
+
 export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
   return deathwishes.find(dw => dw.id === id);
 }
@@ -105,6 +121,14 @@ export const resolvers: Resolvers = {
       const deathwishes = existingDeathwishes(cache);
 
       const data = updateDeathwish(args, deathwishes);
+      save(cache, data);
+
+      return null;
+    },
+    deleteDeathwish: (_parent, args, { cache }) => {
+      const deathwishes = existingDeathwishes(cache);
+
+      const data = deleteDeathwish(args, deathwishes);
       save(cache, data);
 
       return null;

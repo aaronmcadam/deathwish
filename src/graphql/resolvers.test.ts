@@ -1,6 +1,11 @@
 import { deathwish } from '../factories';
 import { Deathwish } from '../types/graphql';
-import { addNewDeathwish, findDeathwish, updateDeathwish } from './resolvers';
+import {
+  addNewDeathwish,
+  findDeathwish,
+  updateDeathwish,
+  deleteDeathwish
+} from './resolvers';
 
 describe.skip('data structure for easy and quick lookups', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -115,9 +120,29 @@ describe('updateDeathwish', () => {
       existingDeathwishes
     );
 
-    // the deathwishes should be updated in place, that is, without shifting
-    // their position
     expect(result.deathwishes).toHaveProperty('length', 2);
     expect(result.deathwishes[0]).toHaveProperty('title', 'A different trip');
+  });
+});
+
+describe('deleteDeathwish', () => {
+  test('deletes the deathwish from the list', () => {
+    const existingDeathwishes: Deathwish[] = [
+      deathwish({ id: '8586ead7' }),
+      deathwish({ id: 'cc329569' })
+    ];
+
+    const result = deleteDeathwish(
+      {
+        input: {
+          deathwish: {
+            id: '8586ead7'
+          }
+        }
+      },
+      existingDeathwishes
+    );
+
+    expect(result.deathwishes[0]).toHaveProperty('id', 'cc329569');
   });
 });

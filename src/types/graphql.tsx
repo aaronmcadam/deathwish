@@ -46,10 +46,24 @@ export enum DeathwishType {
   Video = 'video'
 }
 
+export type DeleteDeathwishAttributes = {
+  id: Scalars['ID'],
+};
+
+export type DeleteDeathwishInput = {
+  deathwish: DeleteDeathwishAttributes,
+};
+
+export type DeleteDeathwishPayload = {
+   __typename?: 'DeleteDeathwishPayload',
+  deathwish?: Maybe<Deathwish>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   createDeathwish?: Maybe<CreateDeathwishPayload>,
   updateDeathwish?: Maybe<UpdateDeathwishPayload>,
+  deleteDeathwish?: Maybe<DeleteDeathwishPayload>,
 };
 
 
@@ -60,6 +74,11 @@ export type MutationCreateDeathwishArgs = {
 
 export type MutationUpdateDeathwishArgs = {
   input: UpdateDeathwishInput
+};
+
+
+export type MutationDeleteDeathwishArgs = {
+  input: DeleteDeathwishInput
 };
 
 export type Query = {
@@ -115,6 +134,22 @@ export type UpdateDeathwishMutation = (
   { __typename?: 'Mutation' }
   & { updateDeathwish: Maybe<(
     { __typename?: 'UpdateDeathwishPayload' }
+    & { deathwish: Maybe<(
+      { __typename?: 'Deathwish' }
+      & Pick<Deathwish, 'id'>
+    )> }
+  )> }
+);
+
+export type DeleteDeathwishMutationVariables = {
+  input: DeleteDeathwishInput
+};
+
+
+export type DeleteDeathwishMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteDeathwish: Maybe<(
+    { __typename?: 'DeleteDeathwishPayload' }
     & { deathwish: Maybe<(
       { __typename?: 'Deathwish' }
       & Pick<Deathwish, 'id'>
@@ -215,6 +250,40 @@ export function useUpdateDeathwishMutation(baseOptions?: ApolloReactHooks.Mutati
 export type UpdateDeathwishMutationHookResult = ReturnType<typeof useUpdateDeathwishMutation>;
 export type UpdateDeathwishMutationResult = ApolloReactCommon.MutationResult<UpdateDeathwishMutation>;
 export type UpdateDeathwishMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateDeathwishMutation, UpdateDeathwishMutationVariables>;
+export const DeleteDeathwishDocument = gql`
+    mutation DeleteDeathwish($input: DeleteDeathwishInput!) {
+  deleteDeathwish(input: $input) @client {
+    deathwish {
+      id
+    }
+  }
+}
+    `;
+export type DeleteDeathwishMutationFn = ApolloReactCommon.MutationFunction<DeleteDeathwishMutation, DeleteDeathwishMutationVariables>;
+
+/**
+ * __useDeleteDeathwishMutation__
+ *
+ * To run a mutation, you first call `useDeleteDeathwishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDeathwishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDeathwishMutation, { data, loading, error }] = useDeleteDeathwishMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteDeathwishMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDeathwishMutation, DeleteDeathwishMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteDeathwishMutation, DeleteDeathwishMutationVariables>(DeleteDeathwishDocument, baseOptions);
+      }
+export type DeleteDeathwishMutationHookResult = ReturnType<typeof useDeleteDeathwishMutation>;
+export type DeleteDeathwishMutationResult = ApolloReactCommon.MutationResult<DeleteDeathwishMutation>;
+export type DeleteDeathwishMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDeathwishMutation, DeleteDeathwishMutationVariables>;
 export const DeathwishesDocument = gql`
     query Deathwishes {
   deathwishes @client {

@@ -61,8 +61,21 @@ export const typeDefs = gql`
     deathwish: Deathwish
   }
 
+  input DeleteDeathwishAttributes {
+    id: ID!
+  }
+
+  input DeleteDeathwishInput {
+    deathwish: DeleteDeathwishAttributes!
+  }
+
+  type DeleteDeathwishPayload {
+    deathwish: Deathwish
+  }
+
   extend type Mutation {
     createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
     updateDeathwish(input: UpdateDeathwishInput!): UpdateDeathwishPayload
+    deleteDeathwish(input: DeleteDeathwishInput!): DeleteDeathwishPayload
   }
 `;

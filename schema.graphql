@@ -52,7 +52,20 @@ type UpdateDeathwishPayload {
   deathwish: Deathwish
 }
 
+input DeleteDeathwishAttributes {
+  id: ID!
+}
+
+input DeleteDeathwishInput {
+  deathwish: DeleteDeathwishAttributes!
+}
+
+type DeleteDeathwishPayload {
+  deathwish: Deathwish
+}
+
 type Mutation {
   createDeathwish(input: CreateDeathwishInput!): CreateDeathwishPayload
   updateDeathwish(input: UpdateDeathwishInput!): UpdateDeathwishPayload
+  deleteDeathwish(input: DeleteDeathwishInput!): DeleteDeathwishPayload
 }
