@@ -1,8 +1,8 @@
-import { Badge, Box, Button, Heading, Stack, Text } from '@chakra-ui/core';
+import { Badge, Box, Heading, Stack, Text } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
 import React from 'react';
-import { Link as ReactRouterLink } from 'react-router-dom';
 import { DeathwishType } from '../types/graphql';
+import { ButtonLink } from './ButtonLink';
 import { DeathwishTemplate } from './DeathwishApp';
 import { ReactComponent as Holiday } from './illustrations/holiday.svg';
 import { ReactComponent as Money } from './illustrations/money.svg';
@@ -59,9 +59,8 @@ export const DeathwishCard: React.FC<
         <Heading size="md">{template.title}</Heading>
         <Text>{template.description}</Text>
       </Stack>
-      <Button
+      <ButtonLink
         data-testid={`choose-deathwish-${type}`}
-        as={ReactRouterLink}
         to={{
           pathname: `/create`,
           state: {
@@ -73,7 +72,7 @@ export const DeathwishCard: React.FC<
         rounded="none"
       >
         Choose this wish
-      </Button>
+      </ButtonLink>
     </Stack>
   );
 };

@@ -12,15 +12,9 @@
     "client": "yarn workspace deathwish-client start",
     "server": "yarn workspace deathwish-server dev",
     "test": "yarn workspace deathwish-server test && yarn workspace deathwish-client test:all",
-    "postinstall": "patch-package",
     "dev:up": "yarn && docker-compose -f docker-compose.dev.yml up",
     "dev:down": "docker-compose -f docker-compose.dev.yml down",
     "dev:uninstall": "docker-compose -f docker-compose.dev.yml down --rmi all",
-    "dev:connect:client": "docker exec -it docker_client_1 /bin/sh",
-    "dev:connect:server": "docker exec -it docker_server_1 /bin/sh",
     "start": "yarn dev:down; yarn dev:up"
-  },
-  "devDependencies": {
-    "patch-package": "^6.2.0"
   }
 }

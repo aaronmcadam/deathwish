@@ -1,4 +1,4 @@
-import { Button, Heading, Stack } from '@chakra-ui/core';
+import { Heading, Stack } from '@chakra-ui/core';
 import React from 'react';
 import {
   BrowserRouter,
@@ -6,10 +6,11 @@ import {
   Route
 } from 'react-router-dom';
 import { Deathwish, DeathwishType } from '../types/graphql';
+import { ButtonLink } from './ButtonLink';
 import { ChooseTemplate } from './ChooseTemplate';
 import { CreateDeathwishForm } from './CreateDeathwishForm';
-import { EditDeathwishPane } from './EditDeathwishPane';
 import { Deathwishes } from './Deathwishes';
+import { EditDeathwishPane } from './EditDeathwishPane';
 
 export interface DeathwishTemplate {
   type: DeathwishType;
@@ -37,10 +38,6 @@ const HomePage: React.FC<{
   );
 };
 
-interface As {
-  as?: React.ElementType | ReactRouterLink;
-}
-
 export const DeathwishApp: React.FC = () => {
   return (
     <Stack data-testid="app-pane" align="center">
@@ -52,15 +49,14 @@ export const DeathwishApp: React.FC = () => {
                 DeathWish
               </Heading>
             </ReactRouterLink>
-            <Button
-              as={ReactRouterLink}
+            <ButtonLink
               to="/deathwishes"
               rightIcon="chevron-right"
               variant="outline"
               variantColor="blue"
             >
               Your deathwishes
-            </Button>
+            </ButtonLink>
           </Stack>
           <Route path="/" exact component={HomePage} />
           <Route path="/create" component={CreateDeathwishForm} />

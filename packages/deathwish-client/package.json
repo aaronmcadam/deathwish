@@ -16,8 +16,7 @@
     "lint": "eslint --ext js,ts,tsx src",
     "typecheck": "tsc --noEmit",
     "validate": "yarn lint && yarn typecheck && yarn test:all",
-    "generate": "graphql-codegen --config codegen.yml",
-    "postinstall": "patch-package"
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.2",

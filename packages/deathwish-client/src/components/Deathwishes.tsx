@@ -7,29 +7,29 @@ import {
   Box,
   Button,
   Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
   Tag,
   TagIcon,
   TagLabel,
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton
+  Text
 } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Link as ReactRouterLink } from 'react-router-dom';
 import {
   Deathwish,
+  DeathwishesDocument,
   useDeathwishesQuery,
-  useDeleteDeathwishMutation,
-  DeathwishesDocument
+  useDeleteDeathwishMutation
 } from '../types/graphql';
+import { ButtonLink } from './ButtonLink';
 import { illustrations } from './DeathwishCard';
 
 const Layout: React.FC = ({ children }) => {
@@ -37,9 +37,9 @@ const Layout: React.FC = ({ children }) => {
     <Box data-testid="deathwishes-pane" py={8}>
       <Stack isInline={true} justify="space-between" align="center">
         <Heading>Your deathwishes</Heading>
-        <Button as={ReactRouterLink} to="/" variantColor="pink">
+        <ButtonLink to="/" variantColor="pink">
           Create a deathwish
-        </Button>
+        </ButtonLink>
       </Stack>
       {children}
     </Box>
@@ -64,9 +64,9 @@ const BlankSlate: React.FC = () => {
       </AlertTitle>
       <AlertDescription maxWidth="sm">
         <Text>You haven't created any deathwishes yet!</Text>
-        <Button as={ReactRouterLink} to="/" marginTop={4}>
+        <ButtonLink to="/" marginTop={4}>
           Create one now!
-        </Button>
+        </ButtonLink>
       </AlertDescription>
     </Alert>
   );
