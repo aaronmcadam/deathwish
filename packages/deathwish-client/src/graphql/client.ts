@@ -18,7 +18,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = ApolloLink.from([
   errorLink,
-  // TODO: change this to the docker network name when we set up docker
   new HttpLink({ uri: 'http://localhost:4000' })
 ]);
 
