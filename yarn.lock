@@ -12113,7 +12113,7 @@ stack-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.2.tgz#33eba3897788558bebfc2db059dc158ec36cebb8"
   integrity sha512-MTX+MeG5U994cazkjd/9KNAapsHnibjMLnfXodlkXw76JEea0UiNzrqidzo1emMwk7w5Qhc9jd4Bn9TBb1MFwA==
 
-start-server-and-test@^1.10.3:
+start-server-and-test@^1.10.3, start-server-and-test@^1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/start-server-and-test/-/start-server-and-test-1.10.5.tgz#6078d665a93372e74d5e7e5ece87634c81926077"
   integrity sha512-3cErmnxyzLaMy460btq0ohGDJcq8G7o16Ijnmgw5Tu59aTa2pkfGR5I8M6p584kDFTxmGvV1OsmV3eWMFC6Obw==

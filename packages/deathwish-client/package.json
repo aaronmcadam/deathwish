@@ -10,6 +10,7 @@
     "test:unit": "yarn test --watchAll=false",
     "test:e2e": "BROWSER=false start-server-and-test start 3000 cypress:run",
     "test:all": "yarn test:unit && yarn test:e2e",
+    "test:once": "yarn test:unit && yarn cypress:run",
     "eject": "react-scripts eject",
     "cypress": "cypress open",
     "cypress:run": "cypress run",

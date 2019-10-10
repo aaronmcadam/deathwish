@@ -3,7 +3,7 @@ services:
   client:
     image: node:10.16.3-alpine
     ports:
-      - "4001:3000"
+      - "3000:3000"
       - "3999:3000" # For docker to know where to redirect HMR queries
     working_dir: /client
     environment:
@@ -25,3 +25,7 @@ services:
     command: yarn server
     # depends_on:
     #   - database
+  # database:
+  #   image: mongo:4.2
+  #   ports:
+  #     - "27017:27017"

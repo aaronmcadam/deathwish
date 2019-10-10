@@ -9,12 +9,18 @@
     "packages/*"
   ],
   "scripts": {
+    "cypress": "yarn workspace deathwish-client cypress",
     "client": "yarn workspace deathwish-client start",
     "server": "yarn workspace deathwish-server dev",
-    "test": "yarn workspace deathwish-server test && yarn workspace deathwish-client test:all",
+    "test": "yarn workspace deathwish-server test && yarn workspace deathwish-client test:once",
     "dev:up": "yarn && docker-compose -f docker-compose.dev.yml up",
     "dev:down": "docker-compose -f docker-compose.dev.yml down",
     "dev:uninstall": "docker-compose -f docker-compose.dev.yml down --rmi all",
-    "start": "yarn dev:down; yarn dev:up"
+    "start": "yarn dev:down; yarn dev:up",
+    "test:all": "start-server-and-test start 3000 test",
+    "dev": "start-server-and-test start 3000 cypress"
+  },
+  "devDependencies": {
+    "start-server-and-test": "^1.10.5"
   }
 }
