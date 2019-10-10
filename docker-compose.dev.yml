@@ -1,0 +1,27 @@
+version: "3"
+services:
+  client:
+    image: node:10.16.3-alpine
+    ports:
+      - "4001:3000"
+      - "3999:3000" # For docker to know where to redirect HMR queries
+    working_dir: /client
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/client
+    command: yarn client
+    depends_on:
+      - server
+  server:
+    image: node:10.16.3-alpine
+    ports:
+      - "4000:4000"
+    working_dir: /server
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/server
+    command: yarn server
+    # depends_on:
+    #   - database
