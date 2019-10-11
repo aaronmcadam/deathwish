@@ -44,6 +44,10 @@ describe('addNewDeathwish', () => {
             description: 'The big apple',
             cost: 5000,
             recipients: 'test@example.com,test2@example.com',
+            owner: {
+              id: expect.any(String),
+              email: expect.any(String)
+            },
             __typename: 'Deathwish'
           }
         ]

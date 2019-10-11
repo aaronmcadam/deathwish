@@ -27,7 +27,9 @@ import {
   Deathwish,
   DeathwishesDocument,
   useDeathwishesQuery,
-  useDeleteDeathwishMutation
+  useDeleteDeathwishMutation,
+  useCurrentUserQuery,
+  User
 } from '../types/graphql';
 import { ButtonLink } from './ButtonLink';
 import { illustrations } from './DeathwishCard';
@@ -126,6 +128,17 @@ function editStatus(state?: { deathwishWasUpdated?: boolean }) {
 const DetailedDeathwishCard: React.FC<
   { deathwish: Deathwish } & StackProps
 > = ({ deathwish, ...styleProps }) => {
+  const { data: currentUserPayload } = useCurrentUserQuery();
+  const owner: User =
+    currentUserPayload && currentUserPayload.me
+      ? {
+          id: currentUserPayload.me.id,
+          email: currentUserPayload.me.email
+        }
+      : {
+          id: 'guest',
+          email: 'guest@example.com'
+        };
   const [deleteDeathwish] = useDeleteDeathwishMutation({
     variables: {
       input: {
@@ -134,7 +147,14 @@ const DetailedDeathwishCard: React.FC<
         }
       }
     },
-    refetchQueries: [{ query: DeathwishesDocument }]
+    refetchQueries: [
+      {
+        query: DeathwishesDocument,
+        variables: {
+          ownerEmail: owner.email
+        }
+      }
+    ]
   });
   const history = ReactRouter.useHistory();
   const { isOpen, onOpen, onClose } = Chakra.useDisclosure();
@@ -239,7 +259,16 @@ export const Deathwishes: React.FC = () => {
   }>();
   const newDeathwishWasAdded = createStatus(location.state);
   const deathwishWasUpdated = editStatus(location.state);
-  const { data } = useDeathwishesQuery();
+  const { data: currentUserPayload } = useCurrentUserQuery();
+  const ownerEmail =
+    currentUserPayload && currentUserPayload.me
+      ? currentUserPayload.me.email
+      : 'guest@example.com';
+  const { data } = useDeathwishesQuery({
+    variables: {
+      ownerEmail: ownerEmail
+    }
+  });
 
   if (!data) {
     return null;

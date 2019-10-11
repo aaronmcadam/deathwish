@@ -1,7 +1,14 @@
+import short from 'short-uuid';
+
 describe('create deathwish', () => {
   describe('with invalid data', () => {
     it('shows error messages', () => {
+      // Sign in
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
 
       // 1. User chooses a template
       cy.findByTestId('choose-deathwish-video').click();
@@ -33,12 +40,17 @@ describe('create deathwish', () => {
     });
 
     it('creates the deathwish when the user fixes the errors', () => {
+      // Sign in
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
 
-      // 1. User chooses a template
+      // User chooses a template
       cy.findByTestId('choose-deathwish-video').click();
 
-      // 2. User incorrectly completes the form
+      // User incorrectly completes the form
       cy.findByTestId('title-input').clear();
       cy.findByTestId('description-input').clear();
       cy.findByTestId('cost-input')
@@ -48,7 +60,7 @@ describe('create deathwish', () => {
         });
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 3. User fixes the error messages
+      // User fixes the error messages
       cy.findByTestId('title-input')
         .clear()
         .type('A video montage');
@@ -66,7 +78,7 @@ describe('create deathwish', () => {
       );
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 4. User sees a goal completion message
+      // User sees a goal completion message
       cy.findByTestId('deathwishes-pane').should(
         'contain.text',
         'You successfully created a new deathwish!'
@@ -76,12 +88,17 @@ describe('create deathwish', () => {
 
   describe('with valid data', () => {
     it('allows users to create deathwishes from a template', () => {
+      // Sign in
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
 
-      // 1. User chooses a template
+      // User chooses a template
       cy.findByTestId('choose-deathwish-money').click();
 
-      // 2. User completes the form
+      // User completes the form
       cy.findByTestId('cost-input')
         .find('input')
         .then(input => {
@@ -91,10 +108,9 @@ describe('create deathwish', () => {
       cy.findByTestId('recipients-input').type(
         'lucky@example.com,another@example.com'
       );
-
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 3. User sees a goal completion message
+      // User sees a goal completion message
       cy.findByTestId('deathwishes-pane').should(
         'contain.text',
         'You successfully created a new deathwish!'
@@ -102,12 +118,17 @@ describe('create deathwish', () => {
     });
 
     it('allows users to customise the deathwish details', () => {
+      // Sign in
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
 
-      // 1. User chooses a template
+      // User chooses a template
       cy.findByTestId('choose-deathwish-holiday').click();
 
-      // 2. User completes the form
+      // User completes the form
       cy.findByTestId('title-input')
         .clear()
         .type('A special holiday');
@@ -126,7 +147,7 @@ describe('create deathwish', () => {
 
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 3. User sees the customised deathwish
+      // User sees the customised deathwish
       cy.findByTestId('deathwishes-pane').should(
         'contain.text',
         'A trip across the world to Tokyo'

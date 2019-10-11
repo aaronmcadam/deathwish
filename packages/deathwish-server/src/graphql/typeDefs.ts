@@ -1,6 +1,11 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
+  type User {
+    id: ID!
+    email: String!
+  }
+
   enum DeathwishType {
     holiday
     money
@@ -14,23 +19,30 @@ export const typeDefs = gql`
     description: String!
     cost: Int!
     recipients: String!
+    owner: User!
   }
 
   type Query {
-    deathwishes: [Deathwish!]!
+    deathwishes(ownerEmail: String!): [Deathwish!]!
     deathwish(id: ID!): Deathwish
   }
 
-  input DeathwishAttributes {
+  input CreateDeathwishUser {
+    id: ID!
+    email: String!
+  }
+
+  input CreateDeathwishAttributes {
     type: DeathwishType!
     title: String!
     description: String!
     cost: Int!
     recipients: String!
+    owner: CreateDeathwishUser!
   }
 
   input CreateDeathwishInput {
-    deathwish: DeathwishAttributes!
+    deathwish: CreateDeathwishAttributes!
   }
 
   type CreateDeathwishPayload {

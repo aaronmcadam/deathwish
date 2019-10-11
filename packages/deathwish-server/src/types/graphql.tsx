@@ -20,13 +20,27 @@ export enum CacheControlScope {
   Private = 'PRIVATE'
 }
 
+export interface CreateDeathwishAttributes {
+  type: DeathwishType,
+  title: Scalars['String'],
+  description: Scalars['String'],
+  cost: Scalars['Int'],
+  recipients: Scalars['String'],
+  owner: CreateDeathwishUser,
+}
+
 export interface CreateDeathwishInput {
-  deathwish: DeathwishAttributes,
+  deathwish: CreateDeathwishAttributes,
 }
 
 export interface CreateDeathwishPayload {
    __typename?: 'CreateDeathwishPayload',
   deathwish?: Maybe<Deathwish>,
+}
+
+export interface CreateDeathwishUser {
+  id: Scalars['ID'],
+  email: Scalars['String'],
 }
 
 export interface Deathwish {
@@ -37,14 +51,7 @@ export interface Deathwish {
   description: Scalars['String'],
   cost: Scalars['Int'],
   recipients: Scalars['String'],
-}
-
-export interface DeathwishAttributes {
-  type: DeathwishType,
-  title: Scalars['String'],
-  description: Scalars['String'],
-  cost: Scalars['Int'],
-  recipients: Scalars['String'],
+  owner: User,
 }
 
 export enum DeathwishType {
@@ -95,6 +102,11 @@ export interface Query {
 }
 
 
+export interface QueryDeathwishesArgs {
+  ownerEmail: Scalars['String']
+}
+
+
 export interface QueryDeathwishArgs {
   id: Scalars['ID']
 }
@@ -116,6 +128,12 @@ export interface UpdateDeathwishPayload {
   deathwish?: Maybe<Deathwish>,
 }
 
+
+export interface User {
+   __typename?: 'User',
+  id: Scalars['ID'],
+  email: Scalars['String'],
+}
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -190,14 +208,16 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>,
+  String: ResolverTypeWrapper<Scalars['String']>,
   Deathwish: ResolverTypeWrapper<Deathwish>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   DeathwishType: DeathwishType,
-  String: ResolverTypeWrapper<Scalars['String']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
+  User: ResolverTypeWrapper<User>,
   Mutation: ResolverTypeWrapper<{}>,
   CreateDeathwishInput: CreateDeathwishInput,
-  DeathwishAttributes: DeathwishAttributes,
+  CreateDeathwishAttributes: CreateDeathwishAttributes,
+  CreateDeathwishUser: CreateDeathwishUser,
   CreateDeathwishPayload: ResolverTypeWrapper<CreateDeathwishPayload>,
   UpdateDeathwishInput: UpdateDeathwishInput,
   UpdateDeathwishAttributes: UpdateDeathwishAttributes,
@@ -213,14 +233,16 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {},
+  String: Scalars['String'],
   Deathwish: Deathwish,
   ID: Scalars['ID'],
   DeathwishType: DeathwishType,
-  String: Scalars['String'],
   Int: Scalars['Int'],
+  User: User,
   Mutation: {},
   CreateDeathwishInput: CreateDeathwishInput,
-  DeathwishAttributes: DeathwishAttributes,
+  CreateDeathwishAttributes: CreateDeathwishAttributes,
+  CreateDeathwishUser: CreateDeathwishUser,
   CreateDeathwishPayload: CreateDeathwishPayload,
   UpdateDeathwishInput: UpdateDeathwishInput,
   UpdateDeathwishAttributes: UpdateDeathwishAttributes,
@@ -247,6 +269,7 @@ export type DeathwishResolvers<ContextType = any, ParentType extends ResolversPa
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   cost?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   recipients?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  owner?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
 }>;
 
 export type DeleteDeathwishPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteDeathwishPayload'] = ResolversParentTypes['DeleteDeathwishPayload']> = ResolversObject<{
@@ -260,7 +283,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  deathwishes?: Resolver<Array<ResolversTypes['Deathwish']>, ParentType, ContextType>,
+  deathwishes?: Resolver<Array<ResolversTypes['Deathwish']>, ParentType, ContextType, RequireFields<QueryDeathwishesArgs, 'ownerEmail'>>,
   deathwish?: Resolver<Maybe<ResolversTypes['Deathwish']>, ParentType, ContextType, RequireFields<QueryDeathwishArgs, 'id'>>,
 }>;
 
@@ -272,6 +295,11 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
   name: 'Upload'
 }
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+}>;
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   CreateDeathwishPayload?: CreateDeathwishPayloadResolvers<ContextType>,
   Deathwish?: DeathwishResolvers<ContextType>,
@@ -280,6 +308,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>,
   UpdateDeathwishPayload?: UpdateDeathwishPayloadResolvers<ContextType>,
   Upload?: GraphQLScalarType,
+  User?: UserResolvers<ContextType>,
 }>;
 
 

@@ -1,7 +1,13 @@
+import short from 'short-uuid';
+
 describe('deleting deathwishes', () => {
   it.only('deletes a deathwish', () => {
-    // 1. User creates a deathwish
+    // User creates a deathwish
     cy.visit('/');
+    cy.findByTestId('email-input').type(
+      `tester-${short.generate()}@example.com`
+    );
+    cy.findByTestId('sign-in-form').submit();
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()
@@ -16,13 +22,13 @@ describe('deleting deathwishes', () => {
     );
     cy.findByTestId('create-deathwish-form').submit();
 
-    // 2. User clicks the delete button on the deathwish card
+    // User clicks the delete button on the deathwish card
     cy.findByTestId('delete-deathwish-button').click();
 
-    // 3. User confirms they want to delete the deathwish
+    // User confirms they want to delete the deathwish
     cy.findByTestId('confirm-delete-button').click();
 
-    // 4. User sees that the deathwish is deleted
+    // User sees that the deathwish is deleted
     cy.findByTestId('deathwishes-pane').should(
       'not.contain.text',
       'A special holiday'
@@ -30,8 +36,12 @@ describe('deleting deathwishes', () => {
   });
 
   it('allows the user to change their mind', () => {
-    // 1. User creates a deathwish
+    // User creates a deathwish
     cy.visit('/');
+    cy.findByTestId('email-input').type(
+      `tester-${short.generate()}@example.com`
+    );
+    cy.findByTestId('sign-in-form').submit();
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()
@@ -46,13 +56,13 @@ describe('deleting deathwishes', () => {
     );
     cy.findByTestId('create-deathwish-form').submit();
 
-    // 2. User clicks the delete button on the deathwish card
+    // User clicks the delete button on the deathwish card
     cy.findByTestId('delete-deathwish-button').click();
 
-    // 3. User decides they don't want to delete the deathwish
+    // User decides they don't want to delete the deathwish
     cy.findByTestId('cancel-delete-button').click();
 
-    // 4. User sees that the deathwish is not deleted
+    // User sees that the deathwish is not deleted
     cy.findByTestId('deathwishes-pane').should(
       'contain.text',
       'A special holiday'

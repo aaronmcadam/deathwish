@@ -17,7 +17,9 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import {
   useCreateDeathwishMutation,
-  DeathwishesDocument
+  DeathwishesDocument,
+  useCurrentUserQuery,
+  User
 } from '../types/graphql';
 import { DeathwishTemplate } from './DeathwishApp';
 import { illustrations, templates } from './DeathwishCard';
@@ -61,6 +63,17 @@ export const CreateDeathwishForm: React.FC = () => {
   const [description, setDescription] = React.useState(template.description);
   const [cost, setCost] = React.useState(0);
   const [recipients, setRecipients] = React.useState('');
+  const { data: currentUserPayload } = useCurrentUserQuery();
+  const owner: User =
+    currentUserPayload && currentUserPayload.me
+      ? {
+          id: currentUserPayload.me.id,
+          email: currentUserPayload.me.email
+        }
+      : {
+          id: 'guest',
+          email: 'guest@example.com'
+        };
   const [createDeathWish] = useCreateDeathwishMutation({
     variables: {
       input: {
@@ -69,11 +82,19 @@ export const CreateDeathwishForm: React.FC = () => {
           title,
           description,
           cost,
-          recipients
+          recipients,
+          owner: owner
         }
       }
     },
-    refetchQueries: [{ query: DeathwishesDocument }]
+    refetchQueries: [
+      {
+        query: DeathwishesDocument,
+        variables: {
+          ownerEmail: owner.email
+        }
+      }
+    ]
   });
   const [formErrors, setFormErrors] = React.useState<{
     title?: string;

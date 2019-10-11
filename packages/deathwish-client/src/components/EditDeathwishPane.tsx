@@ -19,7 +19,9 @@ import {
   Deathwish,
   DeathwishesDocument,
   useDeathwishQuery,
-  useUpdateDeathwishMutation
+  useUpdateDeathwishMutation,
+  useCurrentUserQuery,
+  User
 } from '../types/graphql';
 import { illustrations } from './DeathwishCard';
 
@@ -64,6 +66,17 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
   const [recipients, setRecipients] = React.useState(
     currentDeathwish.recipients
   );
+  const { data: currentUserPayload } = useCurrentUserQuery();
+  const owner: User =
+    currentUserPayload && currentUserPayload.me
+      ? {
+          id: currentUserPayload.me.id,
+          email: currentUserPayload.me.email
+        }
+      : {
+          id: 'guest',
+          email: 'guest@example.com'
+        };
   const [updateDeathwish] = useUpdateDeathwishMutation({
     variables: {
       input: {
@@ -76,7 +89,14 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
         }
       }
     },
-    refetchQueries: [{ query: DeathwishesDocument }]
+    refetchQueries: [
+      {
+        query: DeathwishesDocument,
+        variables: {
+          ownerEmail: owner.email
+        }
+      }
+    ]
   });
   const [formErrors, setFormErrors] = React.useState<{
     title?: string;

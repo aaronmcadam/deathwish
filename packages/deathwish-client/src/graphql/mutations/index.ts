@@ -1,5 +1,16 @@
 import gql from 'graphql-tag';
 
+export const SIGN_IN = gql`
+  mutation SignIn($input: SignInInput!) {
+    signIn(input: $input) @client {
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
+
 export const CREATE_DEATHWISH = gql`
   mutation CreateDeathwish($input: CreateDeathwishInput!) {
     createDeathwish(input: $input) {

@@ -1,0 +1,24 @@
+type User {
+  id: ID!
+  email: String!
+}
+
+extend type Query {
+  me: User
+}
+
+input SignInAttributes {
+  email: String!
+}
+
+input SignInInput {
+  user: SignInAttributes!
+}
+
+type SignInPayload {
+  user: User
+}
+
+extend type Mutation {
+  signIn(input: SignInInput!): SignInPayload
+}

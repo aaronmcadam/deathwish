@@ -67,14 +67,15 @@
     ]
   },
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.2",
     "@cypress/webpack-preprocessor": "^4.1.0",
     "@testing-library/cypress": "^5.0.1",
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.2.0",
     "@types/testing-library__cypress": "^5.0.0",
     "@types/testing-library__react": "^9.1.1",
-    "cooky-cutter": "^1.4.0",
     "cypress": "^3.4.1",
+    "short-uuid": "^3.1.1",
     "start-server-and-test": "^1.10.3",
     "ts-loader": "^6.2.0"
   }

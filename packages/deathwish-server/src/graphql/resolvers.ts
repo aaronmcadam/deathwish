@@ -75,10 +75,6 @@ export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
   return deathwishes.find(dw => dw.id === id);
 }
 
-function existingDeathwishes(): Deathwish[] {
-  return inMemoryDeathwishes;
-}
-
 /**
  * This is causing shared state and breaking the E2E tests, which expect a
  * blank slate before they create their own data.
@@ -110,8 +106,10 @@ export const resolvers: Resolvers = {
 
       return deathwish;
     },
-    deathwishes: (_parent, _args, _context) => {
-      return inMemoryDeathwishes;
+    deathwishes: (_parent, args, _context) => {
+      return inMemoryDeathwishes.filter(
+        dw => dw.owner.email === args.ownerEmail
+      );
     }
   },
   Mutation: {

@@ -1,7 +1,13 @@
+import short from 'short-uuid';
+
 describe('viewing deathwishes', () => {
   it('deathwishes are persisted', () => {
-    // 1. User creates a deathwish
+    // User creates a deathwish
     cy.visit('/');
+    cy.findByTestId('email-input').type(
+      `tester-${short.generate()}@example.com`
+    );
+    cy.findByTestId('sign-in-form').submit();
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()
@@ -17,16 +23,16 @@ describe('viewing deathwishes', () => {
     );
     cy.findByTestId('create-deathwish-form').submit();
 
-    // 2. User sees the deathwish in the list
+    // User sees the deathwish in the list
     cy.findByTestId('deathwishes-pane').should(
       'contain.text',
       'A special holiday'
     );
 
-    // 3. Browser is refreshed
+    // Browser is refreshed
     cy.reload();
 
-    // 4. User should see the deathwish that was created before refreshing
+    // User should see the deathwish that was created before refreshing
     cy.findByTestId('deathwishes-pane').should(
       'contain.text',
       'A special holiday'

@@ -1,8 +1,14 @@
+import short from 'short-uuid';
+
 describe('editing deathwishes', () => {
   describe('with invalid data', () => {
     it('shows error messages', () => {
-      // 1. User creates a deathwish
+      // User creates a deathwish
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
       cy.findByTestId('choose-deathwish-holiday').click();
       cy.findByTestId('title-input')
         .clear()
@@ -17,10 +23,10 @@ describe('editing deathwishes', () => {
       );
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 2. User clicks the edit button on the deathwish card
+      // User clicks the edit button on the deathwish card
       cy.findByTestId('edit-deathwish-button').click();
 
-      // 3. User edits the deathwish with incorrect data
+      // User edits the deathwish with incorrect data
       cy.findByTestId('title-input').clear();
       cy.findByTestId('description-input').clear();
       cy.findByTestId('cost-input')
@@ -31,7 +37,7 @@ describe('editing deathwishes', () => {
       cy.findByTestId('recipients-input').clear();
       cy.findByTestId('edit-deathwish-form').submit();
 
-      // 4. User sees error messages
+      // User sees error messages
       cy.findByTestId('edit-deathwish-form')
         .should(
           'contain.text',
@@ -50,8 +56,12 @@ describe('editing deathwishes', () => {
 
   describe('with valid data', () => {
     it('allows users to update their deathwishes', () => {
-      // 1. User creates a deathwish
+      // User creates a deathwish
       cy.visit('/');
+      cy.findByTestId('email-input').type(
+        `tester-${short.generate()}@example.com`
+      );
+      cy.findByTestId('sign-in-form').submit();
       cy.findByTestId('choose-deathwish-holiday').click();
       cy.findByTestId('title-input')
         .clear()
@@ -67,10 +77,10 @@ describe('editing deathwishes', () => {
       );
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 2. User clicks the edit button on the deathwish card
+      // User clicks the edit button on the deathwish card
       cy.findByTestId('edit-deathwish-button').click();
 
-      // 3. User edits the deathwish they just created
+      // User edits the deathwish they just created
       cy.findByTestId('title-input')
         .clear()
         .type('A worldwide trip');
@@ -88,7 +98,7 @@ describe('editing deathwishes', () => {
         .type('edited@example.com,another@example.com');
       cy.findByTestId('edit-deathwish-form').submit();
 
-      // 4. User should see the edited deathwish
+      // User should see the edited deathwish
       cy.findByTestId('deathwishes-pane').should(
         'contain.text',
         'You successfully updated your deathwish!'
