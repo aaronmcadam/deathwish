@@ -40,15 +40,15 @@ function validate(fields: {
     recipients?: string;
   } = {};
   if (!fields.title) {
-    errors.title = "Don't forget to tell us the name of the deathwish";
+    errors.title = 'Please tell us the name of the deathwish';
   }
 
   if (!fields.description) {
-    errors.description = "We need you to describe what you'd like to happen";
+    errors.description = "Please describe what you'd like to happen";
   }
 
   if (!fields.recipients) {
-    errors.recipients = 'We need to know who benefits from your deathwish';
+    errors.recipients = 'Please tell us who will benefit from your deathwish';
   }
 
   return errors;
