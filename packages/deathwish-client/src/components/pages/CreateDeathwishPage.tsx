@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -16,14 +15,16 @@ import {
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import {
-  Deathwish,
   DeathwishesDocument,
-  useDeathwishQuery,
-  useUpdateDeathwishMutation,
+  useCreateDeathwishMutation,
   useCurrentUserQuery,
   User
-} from '../types/graphql';
-import { illustrations } from './DeathwishCard';
+} from '../../types/graphql';
+import { Illustration } from '../common/TemplateList/Illustration';
+import {
+  DeathwishTemplate,
+  templates
+} from '../common/TemplateList/TemplateCard';
 
 function validate(fields: {
   title: string;
@@ -54,18 +55,16 @@ function validate(fields: {
   return errors;
 }
 
-const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
-  currentDeathwish
-}) => {
+const CreateDeathwishForm: React.FC = () => {
   const history = ReactRouter.useHistory();
-  const [title, setTitle] = React.useState(currentDeathwish.title);
-  const [description, setDescription] = React.useState(
-    currentDeathwish.description
-  );
-  const [cost, setCost] = React.useState(currentDeathwish.cost);
-  const [recipients, setRecipients] = React.useState(
-    currentDeathwish.recipients
-  );
+  const {
+    state: { type }
+  } = ReactRouter.useLocation<{ type: DeathwishTemplate['type'] }>();
+  const template = templates[type];
+  const [title, setTitle] = React.useState(template.title);
+  const [description, setDescription] = React.useState(template.description);
+  const [cost, setCost] = React.useState(0);
+  const [recipients, setRecipients] = React.useState('');
   const { data: currentUserPayload } = useCurrentUserQuery();
   const owner: User =
     currentUserPayload && currentUserPayload.me
@@ -77,15 +76,16 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
           id: 'guest',
           email: 'guest@example.com'
         };
-  const [updateDeathwish] = useUpdateDeathwishMutation({
+  const [createDeathWish] = useCreateDeathwishMutation({
     variables: {
       input: {
         deathwish: {
-          id: currentDeathwish.id,
+          type: template.type,
           title,
           description,
           cost,
-          recipients
+          recipients,
+          owner: owner
         }
       }
     },
@@ -122,17 +122,17 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
       return setFormErrors(formErrors);
     }
 
-    await updateDeathwish();
+    await createDeathWish();
 
     setIsSubmitting(false);
     history.push('/deathwishes', {
-      deathwishWasUpdated: true
+      newDeathwishWasAdded: true
     });
   }
 
   return (
     <Stack
-      data-testid="edit-deathwish-form"
+      data-testid="create-deathwish-form"
       as="form"
       onSubmit={handleSubmit}
       backgroundColor="white"
@@ -141,7 +141,7 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
       spacing={4}
     >
       <Stack isInline={true} justify="center" align="center">
-        <Box as={illustrations[currentDeathwish.type]} size={300} padding={4} />
+        <Illustration type={type} />
       </Stack>
       <FormControl isInvalid={!!formErrors.title}>
         <FormLabel htmlFor="title">Name your deathwish</FormLabel>
@@ -207,34 +207,17 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
       </FormControl>
       <Button
         isLoading={isSubmitting}
-        loadingText="Updating deathwish..."
+        loadingText="Creating deathwish..."
         type="submit"
         variantColor="pink"
       >
-        Update deathwish
+        Create deathwish
       </Button>
     </Stack>
   );
 };
 
-export const EditDeathwishPane: React.FC = () => {
-  const { id } = ReactRouter.useParams<{ id: Deathwish['id'] }>();
-  const { data } = useDeathwishQuery({
-    variables: {
-      id: id
-    }
-  });
-
-  if (!data) {
-    return null;
-  }
-
-  const { deathwish } = data;
-
-  if (!deathwish) {
-    return null;
-  }
-
+export const CreateDeathwishPage: React.FC = () => {
   return (
     <>
       <Heading
@@ -244,9 +227,9 @@ export const EditDeathwishPane: React.FC = () => {
         color="gray.500"
         marginTop={8}
       >
-        Edit your deathwish!
+        Create your deathwish!
       </Heading>
-      <EditDeathwishForm currentDeathwish={deathwish} />
+      <CreateDeathwishForm />
     </>
   );
 };

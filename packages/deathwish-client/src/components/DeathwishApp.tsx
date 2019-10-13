@@ -6,39 +6,12 @@ import {
   Route
 } from 'react-router-dom';
 import { useSignOut } from '../graphql/useSignOut';
-import { Deathwish, DeathwishType } from '../types/graphql';
-import { ButtonLink } from './ButtonLink';
-import { ChooseTemplate } from './ChooseTemplate';
-import { CreateDeathwishForm } from './CreateDeathwishForm';
-import { Deathwishes } from './Deathwishes';
-import { EditDeathwishPane } from './EditDeathwishPane';
-import { ProtectedPage } from './ProtectedPage';
-
-export interface DeathwishTemplate {
-  type: DeathwishType;
-  title: Deathwish['title'];
-  description: Deathwish['description'];
-}
-
-const HomePage: React.FC<{
-  setTemplate: React.Dispatch<React.SetStateAction<DeathwishTemplate | null>>;
-}> = ({ setTemplate }) => {
-  return (
-    <>
-      <Heading
-        as="h3"
-        size="lg"
-        fontWeight="light"
-        color="gray.500"
-        marginTop={2}
-        textAlign="center"
-      >
-        What do you want to happen when you die?
-      </Heading>
-      <ChooseTemplate setTemplate={setTemplate} />
-    </>
-  );
-};
+import { ButtonLink } from './common/ButtonLink';
+import { CreateDeathwishPage } from './pages/CreateDeathwishPage';
+import { DeathwishListPage } from './pages/DeathwishListPage';
+import { EditDeathwishPage } from './pages/EditDeathwishPage';
+import { HomePage } from './pages/HomePage';
+import { ProtectedPage } from './common/ProtectedPage';
 
 export const DeathwishApp: React.FC = () => {
   const signOut = useSignOut();
@@ -75,9 +48,9 @@ export const DeathwishApp: React.FC = () => {
               </Stack>
             </Stack>
             <Route path="/" exact component={HomePage} />
-            <Route path="/create" component={CreateDeathwishForm} />
-            <Route path="/edit/:id" component={EditDeathwishPane} />
-            <Route path="/deathwishes" component={Deathwishes} />
+            <Route path="/create" component={CreateDeathwishPage} />
+            <Route path="/edit/:id" component={EditDeathwishPage} />
+            <Route path="/deathwishes" component={DeathwishListPage} />
           </BrowserRouter>
         </Stack>
       </ProtectedPage>

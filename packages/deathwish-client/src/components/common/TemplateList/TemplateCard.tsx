@@ -1,21 +1,15 @@
-import { Badge, Box, Heading, Stack, Text } from '@chakra-ui/core';
+import { Badge, Heading, Stack, Text } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
 import React from 'react';
-import { DeathwishType } from '../types/graphql';
-import { ButtonLink } from './ButtonLink';
-import { DeathwishTemplate } from './DeathwishApp';
-import { ReactComponent as Holiday } from './illustrations/holiday.svg';
-import { ReactComponent as Money } from './illustrations/money.svg';
-import { ReactComponent as Video } from './illustrations/video-message.svg';
+import { Deathwish, DeathwishType } from '../../../types/graphql';
+import { ButtonLink } from '../ButtonLink';
+import { Illustration } from './Illustration';
 
-export const illustrations: Record<
-  DeathwishType,
-  React.FC<React.SVGProps<SVGSVGElement>>
-> = {
-  [DeathwishType.Money]: Money,
-  [DeathwishType.Video]: Video,
-  [DeathwishType.Holiday]: Holiday
-};
+export interface DeathwishTemplate {
+  type: DeathwishType;
+  title: Deathwish['title'];
+  description: Deathwish['description'];
+}
 
 export const templates: Record<DeathwishType, DeathwishTemplate> = {
   [DeathwishType.Money]: {
@@ -36,24 +30,24 @@ export const templates: Record<DeathwishType, DeathwishTemplate> = {
   }
 };
 
-export const DeathwishCard: React.FC<
+export const TemplateCard: React.FC<
   {
     isPopular?: boolean;
     type: DeathwishType;
   } & StackProps
-> = ({ isPopular = false, type, ...styleProps }) => {
+> = ({ isPopular = false, type, ...stackProps }) => {
   const template = templates[type];
   const containerShadow = isPopular ? 'lg' : 'md';
 
   return (
-    <Stack boxShadow={containerShadow} backgroundColor="white" {...styleProps}>
+    <Stack boxShadow={containerShadow} backgroundColor="white" {...stackProps}>
       {isPopular ? (
         <Badge variant="solid" variantColor="blue" rounded="none" px={4} py={4}>
           Popular
         </Badge>
       ) : null}
       <Stack isInline={true} justify="center" align="center">
-        <Box as={illustrations[type]} size={300} padding={4} />
+        <Illustration type={type} />
       </Stack>
       <Stack spacing={2} borderTop="1px" borderColor="gray.200" px={4} py={4}>
         <Heading size="md">{template.title}</Heading>

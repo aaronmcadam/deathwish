@@ -14,6 +14,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Stack,
   Tag,
   TagIcon,
@@ -26,13 +27,13 @@ import * as ReactRouter from 'react-router-dom';
 import {
   Deathwish,
   DeathwishesDocument,
+  useCurrentUserQuery,
   useDeathwishesQuery,
   useDeleteDeathwishMutation,
-  useCurrentUserQuery,
   User
-} from '../types/graphql';
-import { ButtonLink } from './ButtonLink';
-import { illustrations } from './DeathwishCard';
+} from '../../types/graphql';
+import { ButtonLink } from '../common/ButtonLink';
+import { Illustration } from '../common/TemplateList/Illustration';
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -216,7 +217,7 @@ const DetailedDeathwishCard: React.FC<
         {...styleProps}
       >
         <Stack isInline={true} justify="center" align="center" height={300}>
-          <Box as={illustrations[deathwish.type]} size={300} padding={4} />
+          <Illustration type={deathwish.type} />
         </Stack>
         <Stack spacing={2} borderTop="1px" borderColor="gray.200" px={4} py={4}>
           <Heading size="md">{deathwish.title}</Heading>
@@ -256,7 +257,7 @@ const DetailedDeathwishCard: React.FC<
   );
 };
 
-export const Deathwishes: React.FC = () => {
+export const DeathwishListPage: React.FC = () => {
   const location = ReactRouter.useLocation<{
     newDeathwishWasAdded?: boolean;
     deathwishWasUpdated?: boolean;
@@ -268,11 +269,19 @@ export const Deathwishes: React.FC = () => {
     currentUserPayload && currentUserPayload.me
       ? currentUserPayload.me.email
       : 'guest@example.com';
-  const { data } = useDeathwishesQuery({
+  const { data, loading } = useDeathwishesQuery({
     variables: {
       ownerEmail: ownerEmail
     }
   });
+
+  if (loading) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  }
 
   if (!data) {
     return null;

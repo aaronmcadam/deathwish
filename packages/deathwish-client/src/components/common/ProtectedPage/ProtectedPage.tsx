@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCurrentUserQuery } from '../../types/graphql';
+import { useCurrentUserQuery } from '../../../types/graphql';
 import { SignInPane } from './SignInPane';
 
 export const ProtectedPage: React.FC = ({ children }) => {

@@ -9,7 +9,7 @@ import {
   FormHelperText
 } from '@chakra-ui/core';
 import * as React from 'react';
-import { useSignInMutation } from '../../types/graphql';
+import { useSignInMutation } from '../../../types/graphql';
 
 function validate(fields: {
   email: string;
