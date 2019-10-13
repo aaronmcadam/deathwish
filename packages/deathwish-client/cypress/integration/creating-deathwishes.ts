@@ -10,10 +10,10 @@ describe('creating deathwishes', () => {
       );
       cy.findByTestId('sign-in-form').submit();
 
-      // 1. User chooses a template
+      // User chooses a template
       cy.findByTestId('choose-deathwish-video').click();
 
-      // 2. User incorrectly completes the form
+      // User incorrectly completes the form
       cy.findByTestId('title-input').clear();
       cy.findByTestId('description-input').clear();
       cy.findByTestId('cost-input')
@@ -23,19 +23,13 @@ describe('creating deathwishes', () => {
         });
       cy.findByTestId('create-deathwish-form').submit();
 
-      // 3. User sees error messages
+      // User sees error messages
       cy.findByTestId('create-deathwish-form')
-        .should(
-          'contain.text',
-          "Don't forget to tell us the name of the deathwish"
-        )
+        .should('contain.text', 'Please tell us the name of the deathwish')
+        .and('contain.text', "Please describe what you'd like to happen")
         .and(
           'contain.text',
-          "We need you to describe what you'd like to happen"
-        )
-        .and(
-          'contain.text',
-          'We need to know who benefits from your deathwish'
+          'Please tell us who will benefit from your deathwish'
         );
     });
 
@@ -79,7 +73,7 @@ describe('creating deathwishes', () => {
       cy.findByTestId('create-deathwish-form').submit();
 
       // User sees a goal completion message
-      cy.findByTestId('deathwishes-pane').should(
+      cy.findByTestId('deathwish-list-page').should(
         'contain.text',
         'You successfully created a new deathwish!'
       );
@@ -111,7 +105,7 @@ describe('creating deathwishes', () => {
       cy.findByTestId('create-deathwish-form').submit();
 
       // User sees a goal completion message
-      cy.findByTestId('deathwishes-pane').should(
+      cy.findByTestId('deathwish-list-page').should(
         'contain.text',
         'You successfully created a new deathwish!'
       );
@@ -148,7 +142,7 @@ describe('creating deathwishes', () => {
       cy.findByTestId('create-deathwish-form').submit();
 
       // User sees the customised deathwish
-      cy.findByTestId('deathwishes-pane').should(
+      cy.findByTestId('deathwish-list-page').should(
         'contain.text',
         'A trip across the world to Tokyo'
       );

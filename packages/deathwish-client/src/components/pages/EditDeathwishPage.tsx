@@ -23,37 +23,13 @@ import {
   useUpdateDeathwishMutation
 } from '../../types/graphql';
 import { Illustration } from '../common/TemplateList/Illustration';
+import { validateDeathwish } from './common/validateDeathwish';
 
-function validate(fields: {
-  title: string;
-  description: string;
-  recipients: string;
-}): {
-  title?: string;
-  description?: string;
-  recipients?: string;
-} {
-  let errors: {
-    title?: string;
-    description?: string;
-    recipients?: string;
-  } = {};
-  if (!fields.title) {
-    errors.title = 'Please tell us the name of the deathwish';
-  }
-
-  if (!fields.description) {
-    errors.description = "Please describe what you'd like to happen";
-  }
-
-  if (!fields.recipients) {
-    errors.recipients = 'Please tell us who will benefit from your deathwish';
-  }
-
-  return errors;
-}
-
-const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
+/**
+ * Note: we are breaking encapsulation for testing, until we can get a fake
+ * Apollo provider working
+ */
+export const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
   currentDeathwish
 }) => {
   const history = ReactRouter.useHistory();
@@ -109,7 +85,7 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
 
     setIsSubmitting(true);
 
-    const formErrors = validate({
+    const formErrors = validateDeathwish({
       title,
       description,
       recipients
@@ -205,6 +181,7 @@ const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
         </FormHelperText>
       </FormControl>
       <Button
+        data-testid="edit-deathwish-button"
         isLoading={isSubmitting}
         loadingText="Updating deathwish..."
         type="submit"

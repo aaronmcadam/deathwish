@@ -24,7 +24,7 @@ describe('viewing deathwishes', () => {
     cy.findByTestId('create-deathwish-form').submit();
 
     // User sees the deathwish in the list
-    cy.findByTestId('deathwishes-pane').should(
+    cy.findByTestId('deathwish-list-page').should(
       'contain.text',
       'A special holiday'
     );
@@ -33,7 +33,7 @@ describe('viewing deathwishes', () => {
     cy.reload();
 
     // User should see the deathwish that was created before refreshing
-    cy.findByTestId('deathwishes-pane').should(
+    cy.findByTestId('deathwish-list-page').should(
       'contain.text',
       'A special holiday'
     );

@@ -29,7 +29,7 @@ describe('deleting deathwishes', () => {
     cy.findByTestId('confirm-delete-button').click();
 
     // User sees that the deathwish is deleted
-    cy.findByTestId('deathwishes-pane').should(
+    cy.findByTestId('deathwish-list-page').should(
       'not.contain.text',
       'A special holiday'
     );
@@ -63,7 +63,7 @@ describe('deleting deathwishes', () => {
     cy.findByTestId('cancel-delete-button').click();
 
     // User sees that the deathwish is not deleted
-    cy.findByTestId('deathwishes-pane').should(
+    cy.findByTestId('deathwish-list-page').should(
       'contain.text',
       'A special holiday'
     );

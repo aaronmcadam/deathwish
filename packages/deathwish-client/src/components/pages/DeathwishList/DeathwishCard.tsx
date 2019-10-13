@@ -1,10 +1,5 @@
 import * as Chakra from '@chakra-ui/core';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
   Button,
   Heading,
   Modal,
@@ -14,7 +9,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Stack,
   Tag,
   TagIcon,
@@ -22,76 +16,16 @@ import {
   Text
 } from '@chakra-ui/core';
 import { StackProps } from '@chakra-ui/core/dist/Stack';
-import * as React from 'react';
-import * as ReactRouter from 'react-router-dom';
+import React from 'react';
+import * as ReactRouter from 'react-router';
 import {
   Deathwish,
   DeathwishesDocument,
   useCurrentUserQuery,
-  useDeathwishesQuery,
   useDeleteDeathwishMutation,
   User
-} from '../../types/graphql';
-import { ButtonLink } from '../common/ButtonLink';
-import { Illustration } from '../common/TemplateList/Illustration';
-
-const Layout: React.FC = ({ children }) => {
-  return (
-    <Box data-testid="deathwishes-pane" py={8}>
-      <Stack isInline={true} justify="space-between" align="center">
-        <Heading>Your deathwishes</Heading>
-        <ButtonLink to="/" variantColor="pink">
-          Create a deathwish
-        </ButtonLink>
-      </Stack>
-      {children}
-    </Box>
-  );
-};
-
-const BlankSlate: React.FC = () => {
-  return (
-    <Alert
-      status="info"
-      variant="top-accent"
-      flexDirection="column"
-      justifyContent="center"
-      textAlign="center"
-      py={4}
-      mx={64}
-      marginTop={16}
-    >
-      <AlertIcon size="40px" mr={0} />
-      <AlertTitle mt={4} mb={1} fontSize="lg">
-        You have no deathwishes
-      </AlertTitle>
-      <AlertDescription maxWidth="sm">
-        <Text>You haven't created any deathwishes yet!</Text>
-        <ButtonLink to="/" marginTop={4}>
-          Create one now!
-        </ButtonLink>
-      </AlertDescription>
-    </Alert>
-  );
-};
-
-const CreateSuccessMessage: React.FC = () => {
-  return (
-    <Alert status="success" variant="subtle" marginTop={4}>
-      <AlertIcon />
-      You successfully created a new deathwish!
-    </Alert>
-  );
-};
-
-const UpdateSuccessMessage: React.FC = () => {
-  return (
-    <Alert status="success" variant="subtle" marginTop={4}>
-      <AlertIcon />
-      You successfully updated your deathwish!
-    </Alert>
-  );
-};
+} from '../../../types/graphql';
+import { Illustration } from '../../common/TemplateList/Illustration';
 
 const Recipients: React.FC<{ recipients: Deathwish['recipients'] }> = ({
   recipients
@@ -110,24 +44,10 @@ const Recipients: React.FC<{ recipients: Deathwish['recipients'] }> = ({
   );
 };
 
-function createStatus(state?: { newDeathwishWasAdded?: boolean }) {
-  if (!state) {
-    return false;
-  }
-
-  return state.newDeathwishWasAdded;
-}
-
-function editStatus(state?: { deathwishWasUpdated?: boolean }) {
-  if (!state) {
-    return false;
-  }
-
-  return state.deathwishWasUpdated;
-}
-
-const DetailedDeathwishCard: React.FC<
-  { deathwish: Deathwish } & StackProps
+export const DeathwishCard: React.FC<
+  {
+    deathwish: Deathwish;
+  } & StackProps
 > = ({ deathwish, ...styleProps }) => {
   const { data: currentUserPayload } = useCurrentUserQuery();
   const owner: User =
@@ -161,19 +81,15 @@ const DetailedDeathwishCard: React.FC<
   );
   const history = ReactRouter.useHistory();
   const { isOpen, onOpen, onClose } = Chakra.useDisclosure();
-
   function showEditForm() {
     history.push(`/edit/${deathwish.id}`);
   }
-
   async function handleDeleteClick() {
     await deleteDeathwish();
-
     if (onClose) {
       onClose();
     }
   }
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
@@ -254,71 +170,5 @@ const DetailedDeathwishCard: React.FC<
         </Stack>
       </Stack>
     </>
-  );
-};
-
-export const DeathwishListPage: React.FC = () => {
-  const location = ReactRouter.useLocation<{
-    newDeathwishWasAdded?: boolean;
-    deathwishWasUpdated?: boolean;
-  }>();
-  const newDeathwishWasAdded = createStatus(location.state);
-  const deathwishWasUpdated = editStatus(location.state);
-  const { data: currentUserPayload } = useCurrentUserQuery();
-  const ownerEmail =
-    currentUserPayload && currentUserPayload.me
-      ? currentUserPayload.me.email
-      : 'guest@example.com';
-  const { data, loading } = useDeathwishesQuery({
-    variables: {
-      ownerEmail: ownerEmail
-    }
-  });
-
-  if (loading) {
-    return (
-      <Layout>
-        <Spinner />
-      </Layout>
-    );
-  }
-
-  if (!data) {
-    return null;
-  }
-
-  if (!data.deathwishes) {
-    return null;
-  }
-
-  const { deathwishes } = data;
-
-  if (deathwishes.length === 0) {
-    return (
-      <Layout>
-        <BlankSlate />
-      </Layout>
-    );
-  }
-
-  return (
-    <Layout>
-      {newDeathwishWasAdded && <CreateSuccessMessage />}
-      {deathwishWasUpdated && <UpdateSuccessMessage />}
-      <Heading
-        as="h3"
-        size="lg"
-        fontWeight="light"
-        color="gray.500"
-        marginTop={8}
-      >
-        Here are the deathwishes you've created so far...
-      </Heading>
-      <Stack isInline={true} flexWrap="wrap" spacing={4}>
-        {deathwishes.map(deathwish => (
-          <DetailedDeathwishCard key={deathwish.id} deathwish={deathwish} />
-        ))}
-      </Stack>
-    </Layout>
   );
 };

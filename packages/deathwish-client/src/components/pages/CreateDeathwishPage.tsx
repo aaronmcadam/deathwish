@@ -25,35 +25,7 @@ import {
   DeathwishTemplate,
   templates
 } from '../common/TemplateList/TemplateCard';
-
-function validate(fields: {
-  title: string;
-  description: string;
-  recipients: string;
-}): {
-  title?: string;
-  description?: string;
-  recipients?: string;
-} {
-  let errors: {
-    title?: string;
-    description?: string;
-    recipients?: string;
-  } = {};
-  if (!fields.title) {
-    errors.title = 'Please tell us the name of the deathwish';
-  }
-
-  if (!fields.description) {
-    errors.description = "Please describe what you'd like to happen";
-  }
-
-  if (!fields.recipients) {
-    errors.recipients = 'Please tell us who will benefit from your deathwish';
-  }
-
-  return errors;
-}
+import { validateDeathwish } from './common/validateDeathwish';
 
 const CreateDeathwishForm: React.FC = () => {
   const history = ReactRouter.useHistory();
@@ -110,7 +82,7 @@ const CreateDeathwishForm: React.FC = () => {
 
     setIsSubmitting(true);
 
-    const formErrors = validate({
+    const formErrors = validateDeathwish({
       title,
       description,
       recipients
@@ -206,6 +178,7 @@ const CreateDeathwishForm: React.FC = () => {
         </FormHelperText>
       </FormControl>
       <Button
+        data-testid="create-deathwish-button"
         isLoading={isSubmitting}
         loadingText="Creating deathwish..."
         type="submit"

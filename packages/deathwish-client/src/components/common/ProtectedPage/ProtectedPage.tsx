@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCurrentUserQuery } from '../../../types/graphql';
-import { SignInPane } from './SignInPane';
+import { SignInPage } from './SignInPage';
 
 export const ProtectedPage: React.FC = ({ children }) => {
   const { data, loading } = useCurrentUserQuery();
@@ -13,5 +13,5 @@ export const ProtectedPage: React.FC = ({ children }) => {
     return <>{children}</>;
   }
 
-  return <SignInPane />;
+  return <SignInPage />;
 };

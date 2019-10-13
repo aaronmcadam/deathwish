@@ -26,7 +26,7 @@ function validate(fields: {
   return errors;
 }
 
-export const SignInPane: React.FC = () => {
+export const SignInPage: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [signIn] = useSignInMutation({
     variables: {
@@ -102,6 +102,7 @@ export const SignInPane: React.FC = () => {
           </FormHelperText>
         </FormControl>
         <Button
+          data-testid="sign-in-button"
           isLoading={isSubmitting}
           loadingText="Signing in..."
           type="submit"

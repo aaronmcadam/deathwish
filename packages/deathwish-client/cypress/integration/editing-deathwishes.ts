@@ -39,17 +39,11 @@ describe('editing deathwishes', () => {
 
       // User sees error messages
       cy.findByTestId('edit-deathwish-form')
-        .should(
-          'contain.text',
-          "Don't forget to tell us the name of the deathwish"
-        )
+        .should('contain.text', 'Please tell us the name of the deathwish')
+        .and('contain.text', "Please describe what you'd like to happen")
         .and(
           'contain.text',
-          "We need you to describe what you'd like to happen"
-        )
-        .and(
-          'contain.text',
-          'We need to know who benefits from your deathwish'
+          'Please tell us who will benefit from your deathwish'
         );
     });
   });
@@ -99,11 +93,11 @@ describe('editing deathwishes', () => {
       cy.findByTestId('edit-deathwish-form').submit();
 
       // User should see the edited deathwish
-      cy.findByTestId('deathwishes-pane').should(
+      cy.findByTestId('deathwish-list-page').should(
         'contain.text',
         'You successfully updated your deathwish!'
       );
-      cy.findByTestId('deathwishes-pane')
+      cy.findByTestId('deathwish-list-page')
         .should('contain.text', 'A worldwide trip')
         .and('contain.text', 'A trip around the world, covering 10 cities.')
         .and('contain.text', '30000')
