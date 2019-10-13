@@ -82,16 +82,8 @@ export function findDeathwish(deathwishes: Deathwish[], id: Deathwish['id']) {
  * In theory, this problem would still occur when we move to a database
  * implementation.
  *
- * Options:
- * 1. Add a mutation to clear the deathwishes. We would have to trigger
- * that from the E2E tests.
- * 2. Pass along some identifier in the mutations to namespace the data.
- * Could we generate this identifier on app start and save to local storage?
- * Do the E2E tests start brand new browser sessions? If they don't, the tests
- * may still end up with existing data.
- * We discussed asking for the user's name before, maybe that will work.
- * We would need to force the user to fill out their name though before seeing
- * anything, effectively acting like a sign in process.
+ * To mitigate this, we ask the user to enter their email address. This acts as
+ * a very basic password-less authentication.
  */
 let inMemoryDeathwishes: Deathwish[] = [];
 
