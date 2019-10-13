@@ -71,7 +71,7 @@ export const DeathwishCard: React.FC<
         variantColor="pink"
         rounded="none"
       >
-        Choose this wish
+        Choose this deathwish
       </ButtonLink>
     </Stack>
   );

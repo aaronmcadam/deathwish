@@ -1,6 +1,6 @@
 import short from 'short-uuid';
 
-describe('create deathwish', () => {
+describe('creating deathwishes', () => {
   describe('with invalid data', () => {
     it('shows error messages', () => {
       // Sign in

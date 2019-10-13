@@ -139,23 +139,25 @@ const DetailedDeathwishCard: React.FC<
           id: 'guest',
           email: 'guest@example.com'
         };
-  const [deleteDeathwish] = useDeleteDeathwishMutation({
-    variables: {
-      input: {
-        deathwish: {
-          id: deathwish.id
+  const [deleteDeathwish, { loading: isDeleting }] = useDeleteDeathwishMutation(
+    {
+      variables: {
+        input: {
+          deathwish: {
+            id: deathwish.id
+          }
         }
-      }
-    },
-    refetchQueries: [
-      {
-        query: DeathwishesDocument,
-        variables: {
-          ownerEmail: owner.email
+      },
+      refetchQueries: [
+        {
+          query: DeathwishesDocument,
+          variables: {
+            ownerEmail: owner.email
+          }
         }
-      }
-    ]
-  });
+      ]
+    }
+  );
   const history = ReactRouter.useHistory();
   const { isOpen, onOpen, onClose } = Chakra.useDisclosure();
 
@@ -189,14 +191,16 @@ const DetailedDeathwishCard: React.FC<
               mr={2}
               onClick={onClose}
             >
-              Don't delete
+              Don't delete deathwish
             </Button>
             <Button
               data-testid="confirm-delete-button"
               onClick={handleDeleteClick}
+              isLoading={isDeleting}
+              loadingText="Deleting deathwish..."
               variantColor="red"
             >
-              Delete
+              Delete deathwish
             </Button>
           </ModalFooter>
         </ModalContent>

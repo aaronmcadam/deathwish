@@ -96,6 +96,7 @@ export const CreateDeathwishForm: React.FC = () => {
       }
     ]
   });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [formErrors, setFormErrors] = React.useState<{
     title?: string;
     description?: string;
@@ -105,6 +106,8 @@ export const CreateDeathwishForm: React.FC = () => {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    setIsSubmitting(true);
+
     const formErrors = validate({
       title,
       description,
@@ -112,11 +115,14 @@ export const CreateDeathwishForm: React.FC = () => {
     });
 
     if (Object.keys(formErrors).length) {
+      setIsSubmitting(false);
+
       return setFormErrors(formErrors);
     }
 
     await createDeathWish();
 
+    setIsSubmitting(false);
     history.push('/deathwishes', {
       newDeathwishWasAdded: true
     });
@@ -207,8 +213,13 @@ export const CreateDeathwishForm: React.FC = () => {
             This can be a comma separated list of email addresses
           </FormHelperText>
         </FormControl>
-        <Button type="submit" variantColor="pink">
-          Create wish
+        <Button
+          isLoading={isSubmitting}
+          loadingText="Creating deathwish..."
+          type="submit"
+          variantColor="pink"
+        >
+          Create deathwish
         </Button>
       </Stack>
     </>
