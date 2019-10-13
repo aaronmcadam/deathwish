@@ -1,13 +1,10 @@
-import short from 'short-uuid';
-
 describe('viewing deathwishes', () => {
   it('deathwishes are persisted', () => {
-    // User creates a deathwish
+    // Sign in
+    cy.signInAsNewUser();
     cy.visit('/');
-    cy.findByTestId('email-input').type(
-      `tester-${short.generate()}@example.com`
-    );
-    cy.findByTestId('sign-in-form').submit();
+
+    // User creates a deathwish
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()

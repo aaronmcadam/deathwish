@@ -1,14 +1,11 @@
-import short from 'short-uuid';
-
 describe('editing deathwishes', () => {
   describe('with invalid data', () => {
     it('shows error messages', () => {
-      // User creates a deathwish
+      // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
+
+      // User creates a deathwish
       cy.findByTestId('choose-deathwish-holiday').click();
       cy.findByTestId('title-input')
         .clear()
@@ -50,12 +47,11 @@ describe('editing deathwishes', () => {
 
   describe('with valid data', () => {
     it('allows users to update their deathwishes', () => {
-      // User creates a deathwish
+      // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
+
+      // User creates a deathwish
       cy.findByTestId('choose-deathwish-holiday').click();
       cy.findByTestId('title-input')
         .clear()

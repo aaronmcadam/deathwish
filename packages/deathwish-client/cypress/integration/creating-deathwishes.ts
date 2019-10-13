@@ -1,14 +1,11 @@
-import short from 'short-uuid';
+/// <reference path="../support/index.d.ts" />
 
 describe('creating deathwishes', () => {
   describe('with invalid data', () => {
     it('shows error messages', () => {
       // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
 
       // User chooses a template
       cy.findByTestId('choose-deathwish-video').click();
@@ -35,11 +32,8 @@ describe('creating deathwishes', () => {
 
     it('creates the deathwish when the user fixes the errors', () => {
       // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
 
       // User chooses a template
       cy.findByTestId('choose-deathwish-video').click();
@@ -83,11 +77,8 @@ describe('creating deathwishes', () => {
   describe('with valid data', () => {
     it('allows users to create deathwishes from a template', () => {
       // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
 
       // User chooses a template
       cy.findByTestId('choose-deathwish-money').click();
@@ -113,11 +104,8 @@ describe('creating deathwishes', () => {
 
     it('allows users to customise the deathwish details', () => {
       // Sign in
+      cy.signInAsNewUser();
       cy.visit('/');
-      cy.findByTestId('email-input').type(
-        `tester-${short.generate()}@example.com`
-      );
-      cy.findByTestId('sign-in-form').submit();
 
       // User chooses a template
       cy.findByTestId('choose-deathwish-holiday').click();

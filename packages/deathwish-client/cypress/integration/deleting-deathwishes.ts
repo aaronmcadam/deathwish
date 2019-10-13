@@ -1,13 +1,12 @@
-import short from 'short-uuid';
+/// <reference path="../support/index.d.ts" />
 
 describe('deleting deathwishes', () => {
   it.only('deletes a deathwish', () => {
-    // User creates a deathwish
+    // Sign in
+    cy.signInAsNewUser();
     cy.visit('/');
-    cy.findByTestId('email-input').type(
-      `tester-${short.generate()}@example.com`
-    );
-    cy.findByTestId('sign-in-form').submit();
+
+    // User creates a deathwish
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()
@@ -36,12 +35,11 @@ describe('deleting deathwishes', () => {
   });
 
   it('allows the user to change their mind', () => {
-    // User creates a deathwish
+    // Sign in
+    cy.signInAsNewUser();
     cy.visit('/');
-    cy.findByTestId('email-input').type(
-      `tester-${short.generate()}@example.com`
-    );
-    cy.findByTestId('sign-in-form').submit();
+
+    // User creates a deathwish
     cy.findByTestId('choose-deathwish-holiday').click();
     cy.findByTestId('title-input')
       .clear()

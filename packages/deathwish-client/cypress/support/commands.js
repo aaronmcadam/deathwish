@@ -24,3 +24,30 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands';
+import short from 'short-uuid';
+
+Cypress.Commands.add('createUser', overrides => {
+  const id = short.generate();
+  const user = {
+    id,
+    email: `tester-${id}@example.com`,
+    ...overrides,
+    __typename: 'User'
+  };
+
+  return user;
+});
+
+Cypress.Commands.add('signIn', user => {
+  const serialized = JSON.stringify(user);
+
+  window.localStorage.setItem('__deathwish-user__', serialized);
+
+  return user;
+});
+
+Cypress.Commands.add('signInAsNewUser', () => {
+  cy.createUser().then(user => {
+    cy.signIn(user);
+  });
+});
