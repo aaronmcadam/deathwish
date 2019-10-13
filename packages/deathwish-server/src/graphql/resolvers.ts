@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4';
+import short from 'short-uuid';
 import {
   Deathwish,
   MutationUpdateDeathwishArgs,
@@ -12,7 +12,7 @@ export function addNewDeathwish(
   existingDeathwishes: Deathwish[]
 ) {
   const deathwish = {
-    id: uuidv4(),
+    id: short.generate(),
     ...mutationVariables.input.deathwish,
     __typename: 'Deathwish'
   };

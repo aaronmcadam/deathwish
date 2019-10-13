@@ -34,7 +34,6 @@
     "@types/react": "16.9.4",
     "@types/react-dom": "16.9.1",
     "@types/react-router-dom": "^5.1.0",
-    "@types/uuid": "^3.4.5",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.13",
@@ -49,8 +48,7 @@
     "react-dom": "^16.10.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.2",
-    "typescript": "3.6.3",
-    "uuid": "^3.3.3"
+    "typescript": "3.6.3"
   },
   "eslintConfig": {
     "extends": [
