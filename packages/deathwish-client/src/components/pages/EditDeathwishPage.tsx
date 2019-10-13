@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Button,
   FormControl,
   FormErrorMessage,
@@ -9,7 +13,9 @@ import {
   InputGroup,
   InputLeftAddon,
   NumberInput,
+  Spinner,
   Stack,
+  Text,
   Textarea
 } from '@chakra-ui/core';
 import * as React from 'react';
@@ -193,13 +199,39 @@ export const EditDeathwishForm: React.FC<{ currentDeathwish: Deathwish }> = ({
   );
 };
 
+const LoadingMessage: React.FC = () => {
+  return (
+    <Alert
+      status="info"
+      variant="top-accent"
+      flexDirection="column"
+      justifyContent="center"
+      textAlign="center"
+      py={4}
+      mx={64}
+    >
+      <AlertIcon as={Spinner} size="40px" mr={0} />
+      <AlertTitle mt={4} mb={1} fontSize="lg">
+        Loading your deathwish...
+      </AlertTitle>
+      <AlertDescription maxWidth="sm">
+        <Text>Just a moment...</Text>
+      </AlertDescription>
+    </Alert>
+  );
+};
+
 export const EditDeathwishPage: React.FC = () => {
   const { id } = ReactRouter.useParams<{ id: Deathwish['id'] }>();
-  const { data } = useDeathwishQuery({
+  const { data, loading } = useDeathwishQuery({
     variables: {
       id: id
     }
   });
+
+  if (loading) {
+    return <LoadingMessage />;
+  }
 
   if (!data) {
     return null;

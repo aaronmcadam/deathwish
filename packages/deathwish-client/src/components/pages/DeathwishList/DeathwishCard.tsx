@@ -124,7 +124,6 @@ export const DeathwishCard: React.FC<
       </Modal>
       <Stack
         key={deathwish.id}
-        data-testid="current-deathwish"
         boxShadow="md"
         backgroundColor="white"
         width={300}
