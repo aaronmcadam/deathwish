@@ -1,16 +1,32 @@
-import * as React from 'react';
-import { useCurrentUserQuery, useSignInMutation } from '../types/graphql';
 import {
-  Stack,
-  Heading,
+  Button,
   FormControl,
-  FormLabel,
-  Input,
   FormErrorMessage,
-  Button
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  FormHelperText
 } from '@chakra-ui/core';
+import * as React from 'react';
+import { useSignInMutation } from '../../types/graphql';
 
-const SignInPane: React.FC = () => {
+function validate(fields: {
+  email: string;
+}): {
+  email?: string;
+} {
+  let errors: {
+    email?: string;
+  } = {};
+  if (!fields.email) {
+    errors.email = 'Please enter your email address';
+  }
+
+  return errors;
+}
+
+export const SignInPane: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [signIn] = useSignInMutation({
     variables: {
@@ -21,20 +37,34 @@ const SignInPane: React.FC = () => {
       }
     }
   });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [formErrors, setFormErrors] = React.useState<{
+    email?: string;
+  }>({});
 
-  function handleEmailChange(event: any) {
+  function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
   }
 
-  function handleSubmit(event: any) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    signIn();
-  }
 
-  // TODO: use same pattern from deathwish creation form
-  const formErrors = {
-    email: false
-  };
+    setIsSubmitting(true);
+
+    const formErrors = validate({
+      email
+    });
+
+    if (Object.keys(formErrors).length) {
+      setIsSubmitting(false);
+
+      return setFormErrors(formErrors);
+    }
+
+    await signIn();
+
+    setIsSubmitting(false);
+  }
 
   return (
     <Stack align="center" marginTop={20}>
@@ -63,12 +93,16 @@ const SignInPane: React.FC = () => {
             type="email"
             autoComplete="email"
             id="email"
+            aria-describedby="email-helper-text"
             variant="filled"
           />
           <FormErrorMessage>Please enter your email address</FormErrorMessage>
+          <FormHelperText id="email-helper-text">
+            We don't require a password!
+          </FormHelperText>
         </FormControl>
         <Button
-          // isLoading={isSigningIn}
+          isLoading={isSubmitting}
           loadingText="Signing in..."
           type="submit"
           variantColor="blue"
@@ -78,18 +112,4 @@ const SignInPane: React.FC = () => {
       </Stack>
     </Stack>
   );
-};
-
-export const ProtectedPage: React.FC = ({ children }) => {
-  const { data, loading } = useCurrentUserQuery();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (data && data.me) {
-    return <>{children}</>;
-  }
-
-  return <SignInPane />;
 };
