@@ -64,9 +64,60 @@ Some concerns to note are:
 
 We use TypeScript for all of the source code. The app is unit tested with [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro). We use [Cypress](https://www.cypress.io/) for End to End testing.
 
-### Available Scripts
+### Running and developing the app locally
 
-In the project directory, you can run:
+If you wish to just see the app in action, run `yarn start`.
+
+To get started with development, run `yarn dev`.
+
+Both commands may take a little while when you run them first as they fetch and build their dependencies.
+
+We're using a monorepo implemented with yarn workspaces to keep our client
+and server code together. This makes it easier to manage feature development and
+share dependencies.
+
+There are two folders within `packages`:
+
+- `deathwish-client` for the React application
+- `deathwish-server` for the GraphQL server application.
+
+We use docker to bring up the application with all of its dependencies.
+
+Here are the available scripts at the root of the project:
+
+| Name            | Description                                                                                                                           |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| `dev`           | Starts the app in Cypress, ready for [outside-in TDD](https://www.codecademy.com/articles/tdd-outside-in). Starts the services first. |
+| `dev:up`        | Installs dependencies and brings up the services                                                                                      |
+| `dev:down`      | Stops the services                                                                                                                    |
+| `dev:uninstall` | Cleans up and removes the docker containers                                                                                           |
+| `start`         | Stops any running services and brings up the services                                                                                 |
+| `test:all`      | Runs the unit and End to End tests for the server and client. Starts the services first.                                              |
+| `test`          | Runs the unit and End to End tests for the server and client                                                                          |
+| `cypress`       | Launches the Cypress app                                                                                                              |
+| `client`        | Starts the client                                                                                                                     |
+| `server`        | Starts the server                                                                                                                     |
+
+We have added common tasks to the root scripts, but we can still access the scripts
+within the client or server workspaces by using the `yarn workspace` command.
+For example, to generate new types for the client, we could run
+`yarn workspace deathwish-client generate`.
+
+Here are the scripts available inside `deathwish-server`:
+
+| Name         | Description                                         |
+|--------------|-----------------------------------------------------|
+| `dev`        | Starts the dev server with live reloading           |
+| `test`       | Runs the unit tests                                 |
+| `validate`   | Checks the types, lints and runs the tests          |
+| `build`      | Builds the app for production to the `dist` folder. |
+| `lint`       | Runs ESLint                                         |
+| `start`      | Starts the production app                           |
+| `prod`       | Builds and starts the production app                |
+| `type-check` | Checks the types                                    |
+| `format`     | Formats the code with prettier                      |
+
+Here are the scripts available inside `deathwish-client`:
 
 | Name          | Description                                                                                               |
 |---------------|-----------------------------------------------------------------------------------------------------------|
@@ -80,8 +131,5 @@ In the project directory, you can run:
 | `lint`        | Runs ESLint                                                                                               |
 | `start`       | Starts the app in development mode                                                                        |
 | `test:e2e`    | Runs the End to End tests headlessly. It starts the app first.                                            |
-
-### A note on patch-package
-
-I've had to patch some of the type definitions for Chakra UI. The types should be patched
-automatically by installing the dependencies. I've created an issue and a fix should be available soon: https://github.com/chakra-ui/chakra-ui/issues/148.
+| `test:unit`   | Runs the unit tests.                                                                                      |
+| `test:once`   | Runs all the tests once. It does not start the app first.                                                 |
