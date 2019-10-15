@@ -6,10 +6,12 @@ import {
   Heading,
   Input,
   Stack,
-  FormHelperText
+  FormHelperText,
+  Box
 } from '@chakra-ui/core';
 import * as React from 'react';
 import { useSignInMutation } from '../../../types/graphql';
+import { ReactComponent as Wishes } from '../../../illustrations/wishes.svg';
 
 function validate(fields: {
   email: string;
@@ -71,7 +73,8 @@ export const SignInPage: React.FC = () => {
       <Heading as="h1" fontWeight="semibold">
         DeathWish
       </Heading>
-      <Heading size="lg">Sign in to your account</Heading>
+      <Box as={Wishes} size={300} padding={4} />
+      <Heading size="lg">Sign in to get wishing!</Heading>
       <Stack
         data-testid="sign-in-form"
         as="form"
