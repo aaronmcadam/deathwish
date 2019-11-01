@@ -1,0 +1,40 @@
+{
+  "name": "deathwish-server",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "babel src --out-dir dist --extensions \".ts\" --ignore '**/*.test.ts'",
+    "dev": "nodemon --exec babel-node --extensions \".ts\" --ignore '**/*.test.ts' ./src/index.ts",
+    "format": "prettier --write src/**/*.ts",
+    "generate": "graphql-codegen --config codegen.yml",
+    "lint": "eslint src --ext .ts",
+    "prod": "npm run build && npm start",
+    "start": "node ./dist/server.js",
+    "test": "jest",
+    "type-check": "tsc",
+    "validate": "yarn type-check && yarn lint && yarn test"
+  },
+  "dependencies": {
+    "apollo-server": "^2.9.5",
+    "graphql": "^14.5.8",
+    "immer": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.3",
+    "@babel/core": "^7.6.3",
+    "@babel/node": "^7.6.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@graphql-codegen/cli": "^1.8.1",
+    "@graphql-codegen/typescript": "^1.8.1",
+    "@graphql-codegen/typescript-resolvers": "^1.8.1",
+    "cooky-cutter": "^1.4.0",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.3",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.4"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "name": "deathwish-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "dev": "BROWSER=false start-server-and-test start 3000 cypress",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:unit": "yarn test --watchAll=false",
+    "test:e2e": "BROWSER=false start-server-and-test start 3000 cypress:run",
+    "test:all": "yarn test:unit && yarn test:e2e",
+    "test:once": "yarn test:unit && yarn cypress:run",
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:run": "cypress run",
+    "lint": "eslint --ext js,ts,tsx src",
+    "typecheck": "tsc --noEmit",
+    "validate": "yarn lint && yarn typecheck && yarn test:all",
+    "generate": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.2",
+    "@chakra-ui/core": "^0.3.4",
+    "@emotion/core": "^10.0.21",
+    "@emotion/styled": "^10.0.17",
+    "@graphql-codegen/add": "^1.8.0",
+    "@graphql-codegen/cli": "^1.8.0",
+    "@graphql-codegen/typescript": "^1.8.0",
+    "@graphql-codegen/typescript-operations": "^1.8.0",
+    "@graphql-codegen/typescript-react-apollo": "^1.8.0",
+    "@types/jest": "24.0.18",
+    "@types/node": "12.7.9",
+    "@types/react": "16.9.4",
+    "@types/react-dom": "16.9.1",
+    "@types/react-router-dom": "^5.1.0",
+    "apollo-cache-inmemory": "^1.6.3",
+    "apollo-client": "^2.6.4",
+    "apollo-link": "^1.2.13",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-http": "^1.5.16",
+    "emotion-theming": "^10.0.19",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "immer": "^4.0.1",
+    "react": "^16.10.1",
+    "react-content-loader": "^4.3.2",
+    "react-dom": "^16.10.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.1.2",
+    "typescript": "3.6.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:cypress/recommended"
+    ],
+    "env": {
+      "cypress/globals": true
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@apollo/react-testing": "^3.1.2",
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "@testing-library/cypress": "^5.0.1",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.2.0",
+    "@types/testing-library__cypress": "^5.0.0",
+    "@types/testing-library__react": "^9.1.1",
+    "cypress": "^3.4.1",
+    "eslint-plugin-cypress": "^2.7.0",
+    "short-uuid": "^3.1.1",
+    "start-server-and-test": "^1.10.3",
+    "ts-loader": "^6.2.0"
+  }
+}
